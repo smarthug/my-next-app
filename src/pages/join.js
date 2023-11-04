@@ -1,22 +1,24 @@
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../utils/firebase";
 // import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import {
-  Error,
   Form,
+  Error,
   Input,
   Switcher,
   Title,
   Wrapper,
 } from "../components/auth-components";
 import GithubButton from "../components/github-btn";
-// import GoogleButton from "../components/google-btn";
+
+import { createGlobalStyle, styled } from "styled-components";
 
 export default function CreateAccount() {
 //   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +26,9 @@ export default function CreateAccount() {
     const {
       target: { name, value },
     } = e;
-    if (name === "email") {
+    if (name === "name") {
+      setName(value);
+    } else if (name === "email") {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
@@ -33,11 +37,18 @@ export default function CreateAccount() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (isLoading || email === "" || password === "") return;
+    if (isLoading || name === "" || email === "" || password === "") return;
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      const credentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(credentials.user, {
+        displayName: name,
+      });
+    //   navigate("/");
     } catch (e) {
       if (e instanceof FirebaseError) {
         setError(e.message);
@@ -47,9 +58,20 @@ export default function CreateAccount() {
     }
   };
   return (
+    <BigWrapper>
+
+
     <Wrapper>
-      <Title>Log into 𝕏</Title>
+      <Title>Join MinterLab</Title>
       <Form onSubmit={onSubmit}>
+        <Input
+          onChange={onChange}
+          name="name"
+          value={name}
+          placeholder="Name"
+          type="text"
+          required
+        />
         <Input
           onChange={onChange}
           name="email"
@@ -66,15 +88,25 @@ export default function CreateAccount() {
           type="password"
           required
         />
-        <Input type="submit" value={isLoading ? "Loading..." : "Log in"} />
+        <Input
+          type="submit"
+          value={isLoading ? "Loading..." : "Create Account"}
+        />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
-        Don't have an account?{" "}
-        {/* <Link to="/create-account">Create one &rarr;</Link> */}
+        {/* Already have an account? <Link to="/login">Log in &rarr;</Link> */}
       </Switcher>
       <GithubButton />
-      {/* <GoogleButton /> */}
     </Wrapper>
+
+    </BigWrapper>
   );
 }
+
+
+const BigWrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
