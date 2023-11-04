@@ -12,6 +12,7 @@ export default function Home() {
   return (
     <div>
       {/* <Project /> */}
+      <h1>MinterLab LandingPage</h1>
     </div>
   )
 }
