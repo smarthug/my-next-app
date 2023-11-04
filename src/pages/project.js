@@ -321,7 +321,7 @@ function MockProjectDetail() {
             <p>스크롤 서바이벌의 후속작을 만들기 위한 프로젝트입니다.</p>
             <p>Q. 프로젝트를 간단히 소개한다면?</p>
             <p>30여가지의 다양한 총을 이용하여 수없이 몰려드는 몬스터과 다양한 패턴을 가진 보스 몬스터들로부터 생존하는 게임입니다. 건 서바이벌은 제작전이라 영상이 없습니다. 비슷한 게임인 스크롤 서바이벌의 영상을 보시고 참고해주시면 감사하겠습니다.</p>
-            <p><iframe src="https://www.youtube.com/embed/hFdcUgHfiFQ" width="620" height="348" frameborder="0" allowfullscreen="allowfullscreen"></iframe> &nbsp;</p>
+            <p><iframe src="https://www.youtube.com/embed/hFdcUgHfiFQ" width="620" height="348" frameBorder="0" allowFullScreen="allowfullscreen"></iframe> &nbsp;</p>
             <p>&nbsp;스크롤 서바이벌은 12개의 다른 스테이지가 있으며, 각 스테이지에서 모두 다른 몬스터들과 다양한 패턴을 가진 보스 몬스터가 등장합니다. 24가지의 마법을 수많은 종류의 스크롤을 이용하여 강화하며 생존하는 게임입니다. 건 서바이벌도 마찬가지로 여러 스테이지로 구성이 되며, 각 스테이지별로 다른 몬스터들과 기존 스크롤 서바이벌과 차별화된 패턴을 가진 보스몹들이 대거 등장할 예정입니다. 또한, 마법이 아닌 총을 사용함으로써 타격감과 시각적인 재미가 기존 작품보다 더해질 것으로 생각됩니다.</p>
             <p>Q. 이 프로젝트가 왜 의미있나요?</p>
             <p>전작인 스크롤 서바이벌이 출시 한달만에 구글 플레이 스토어 1위를 달성했습니다. (10월 15일)</p>
