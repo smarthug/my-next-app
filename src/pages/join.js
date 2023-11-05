@@ -47,6 +47,10 @@ export default function CreateAccount() {
     const onSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        if (!address) {
+            setError("Please connect wallet")
+            return
+        }
         if (isLoading || name === "" || email === "" || password === "") return;
         try {
             setLoading(true);
@@ -193,3 +197,22 @@ const BigWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+// -webkit-text-size-adjust: 100%;
+// -webkit-font-smoothing: antialiased;
+// -webkit-box-direction: normal;
+// box-sizing: inherit;
+// word-break: break-all;
+// text-decoration: none;
+// -webkit-tap-highlight-color: rgba(0,0,0,.1);
+// font-family: 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Arial, 'NotoSansKR', sans-serif;
+// font-size: 14px;
+// line-height: 24px;
+// letter-spacing: -0.015em;
+// font-weight: 400;
+// background: #FFF;
+// color: #3d3d3d;
+// width: 100%;
+// min-height: 640px;
+// border-bottom: 1px solid rgb(230, 230, 230);
+// position: relative;

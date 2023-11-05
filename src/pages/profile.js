@@ -101,7 +101,7 @@ export default function Profile() {
   }, []);
   return (
     <Wrapper>
-      <AvatarUpload htmlFor="avatar">
+      {/* <AvatarUpload htmlFor="avatar">
         {avatar ? (
           <AvatarImg src={avatar} />
         ) : (
@@ -120,7 +120,7 @@ export default function Profile() {
         id="avatar"
         type="file"
         accept="image/*"
-      />
+      /> */}
       <Name>{user?.displayName ?? "Anonymous"}</Name>
       {/* <Tweets>
         {tweets.map((tweet) => (

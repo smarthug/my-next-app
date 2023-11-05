@@ -92,9 +92,7 @@ export default function ResponsiveDrawer() {
             <Button>프로젝트 올리기</Button>
 
             <UserButton />
-          </Box
-
-          >
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
