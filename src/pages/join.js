@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { addDoc, collection, updateDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth,db } from "../utils/firebase";
+import { auth, db } from "../utils/firebase";
 // import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import {
@@ -19,8 +20,11 @@ import { useRouter } from 'next/router'
 import Link from "next/link";
 import { Button } from "@mui/material";
 
+import { useAccount } from "wagmi";
+
 
 export default function CreateAccount() {
+    const { address, connector, isConnected } = useAccount()
     const router = useRouter()
     //   const navigate = useNavigate();
     const [isLoading, setLoading] = useState(false);
@@ -53,6 +57,7 @@ export default function CreateAccount() {
             );
             await updateProfile(credentials.user, {
                 displayName: name,
+                walletAddress: address,
             });
             router.push('/')
         } catch (e) {
@@ -64,16 +69,74 @@ export default function CreateAccount() {
         }
     };
 
-    async function AddUserInfo(){
+    async function AddUserInfo() {
+        console.log(address, connector, isConnected)
 
         const user = auth.currentUser;
+        console.log(user)
 
-        const doc = await addDoc(collection(db, "users"), {
-            tweet,
-            createdAt: Date.now(),
-            username: user.displayName || "Anonymous",
-            userId: user.uid,
-          });
+        if (isConnected) {
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+        try {
+            // setLoading(true);
+            // const doc = await addDoc(collection(db, "Users"), {
+            //     walletAddress: address,
+            //     createdAt: Date.now(),
+            //     username: user.displayName || "Anonymous",
+            //     userId: user.uid,
+            //     email: user.email,
+            // });
+
+            // await setDoc(doc(db, "Users", user.uid), {
+            //     // walletAddress: address,
+            //     // createdAt: Date.now(),
+            //     // username: user.displayName || "Anonymous",
+            //     // userId: user.uid,
+            //     // email: user.email,
+            //     test: "test"
+            // });
+
+
+            // const docRef = doc(db, "Users", "SF");
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                console.log("Document data:", docSnap.data());
+            } else {
+                // docSnap.data() will be undefined in this case
+                console.log("No such document!");
+            }
+
+
+
+            // if (file) {
+            //   const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
+            //   const result = await uploadBytes(locationRef, file);
+            //   const url = await getDownloadURL(result.ref);
+            //   await updateDoc(doc, {
+            //     photo: url,
+            //   });
+            // }
+            // setTweet("");
+            // setFile(null);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            // setLoading(false);
+        }
     }
     return (
         <BigWrapper>
@@ -117,7 +180,7 @@ export default function CreateAccount() {
                 </Switcher>
                 <GithubButton />
 
-                <Button variant="contained" color="primary" onClick={AddUserInfo} style={{ marginTop: "20px" }}></Button>
+                <Button variant="contained" color="primary" onClick={AddUserInfo} style={{ marginTop: "20px" }}>TEST</Button>
             </Wrapper>
 
         </BigWrapper>

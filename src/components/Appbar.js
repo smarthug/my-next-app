@@ -1,11 +1,12 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { Button, IconButton, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import UserButton from "./UserButton";
 
 export default function ResponsiveDrawer() {
   const router = useRouter();
@@ -32,46 +33,68 @@ export default function ResponsiveDrawer() {
           WebkitBackdropFilter: `blur(3px)`,
         }}
       >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{
-              width: "48px",
-              height: "48px",
-            }}
-            id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-          >
-            <Image src="/MenuIcon.png" alt="menu" width="48" height="48" />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-            slotProps={{
-              paper: {
-                sx: {
-                  backgroundColor: "#000",
-                  color: "#fff",
+        <Toolbar sx={{}}>
+          <div>
+
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{
+                width: "48px",
+                height: "48px",
+              }}
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              <Image src="/MenuIcon.png" alt="menu" width="48" height="48" />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+              slotProps={{
+                paper: {
+                  sx: {
+                    backgroundColor: "#000",
+                    color: "#fff",
+                  },
                 },
-              },
+              }}
+            >
+              <MenuItem onClick={() => handleClose("/")}>Home</MenuItem>
+              <MenuItem onClick={() => handleClose("/profile")}>Profile</MenuItem>
+              {/* <MenuItem onClick={() => handleClose("/list")}>List</MenuItem> */}
+            </Menu>
+
+
+
+          </div>
+          <Box sx={{ flexGrow: 1 }} />
+          <ConnectButton label="CONNECT WALLET" />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "20px",
+
+              marginLeft: "20px",
             }}
           >
-            <MenuItem onClick={() => handleClose("/")}>Home</MenuItem>
-            <MenuItem onClick={() => handleClose("/profile")}>Profile</MenuItem>
-            {/* <MenuItem onClick={() => handleClose("/list")}>List</MenuItem> */}
-          </Menu>
-          <ConnectButton label="CONNECT WALLET" />
+            <Button>프로젝트 올리기</Button>
+
+            <UserButton />
+          </Box
+
+          >
         </Toolbar>
       </AppBar>
     </Box>
