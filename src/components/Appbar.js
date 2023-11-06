@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import UserButton from "./UserButton";
+import Link from "next/link";
 
 export default function ResponsiveDrawer() {
   const router = useRouter();
@@ -89,7 +90,11 @@ export default function ResponsiveDrawer() {
               marginLeft: "20px",
             }}
           >
-            <Button>프로젝트 올리기</Button>
+            <Link href="/creators/projects">
+              <Button >
+                프로젝트 올리기
+              </Button>
+            </Link>
 
             <UserButton />
           </Box>

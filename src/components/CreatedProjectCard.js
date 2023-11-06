@@ -1,68 +1,57 @@
 import React from 'react';
-import { styled } from '@mui/system';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import styled from 'styled-components';
 
-const CustomCard = styled(Card)({
-  width: '1160px', // Updated width
-  margin: 'auto',
-  position: 'relative', // to position the buttons absolutely
-  // Add additional styling to ensure the card doesn't stretch beyond the view width on smaller screens
-  maxWidth: '100%',
-  boxSizing: 'border-box',
-  display: 'flex',
-});
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc; // Assuming a light gray border
+  background-color: #fff;
+  width: 1160px; // Adjust width as necessary
+`;
 
-const CardImage = styled('div')({
-  height: '140px',
-  backgroundColor: '#e0e0e0',
-  marginBottom: '10px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
+const ImagePlaceholder = styled.div`
+  width: 172px;
+  height: 129px;
+  background-color: #f0f0f0; // Placeholder color
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed #ccc;
+`;
 
-const CardActions = styled('div')({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  position: 'absolute',
-  bottom: '10px',
-  right: '10px',
-});
+const TextSection = styled.div`
+  flex-grow: 1;
+  margin-left: 20px;
+`;
 
-const CustomButton = styled(Button)({
-  margin: '0 10px',
-  '&:last-child': {
-    marginRight: 0,
-  },
-});
+const Button = styled.button`
+  padding: 10px 20px;
+  margin-left: 10px;
+  border: none;
+  background-color: #e0e0e0; // Assuming a light gray background
+  cursor: pointer;
 
-function CreatedProjectCard() {
-  return (
-    <CustomCard>
-      <CardContent>
-        <CardImage>
-          {/* This is a placeholder for the image */}
-          <Typography variant="caption">이미지 영역</Typography>
-        </CardImage>
-        <Typography variant="subtitle1" color="textSecondary">
-          전송 중
-        </Typography>
-        <Typography variant="body2" component="p">
-          제목영역
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          testfefwefef
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <CustomButton size="small">리뷰</CustomButton>
-        <CustomButton size="small">상제</CustomButton>
-      </CardActions>
-    </CustomCard>
-  );
-}
+  &:hover {
+    background-color: #d4d4d4; // Slightly darker on hover
+  }
+`;
 
-export default CreatedProjectCard;
+const MyComponent = () => (
+  <Wrapper>
+    <ImagePlaceholder>
+      <span>Image</span> {/* Placeholder for the image */}
+    </ImagePlaceholder>
+    <TextSection>
+      <div>제목없음</div>
+      <div>testfewfef</div>
+    </TextSection>
+    <div>
+      <Button>관리</Button>
+      <Button>삭제</Button>
+    </div>
+  </Wrapper>
+);
+
+export default MyComponent;

@@ -18,6 +18,7 @@ const CustomButton = styled(Button)({
     padding: '5px 10px',
     textTransform: 'none',
     fontSize: '16px',
+    // textDecoration: 'none',
     '&:hover': {
         backgroundColor: '#f5f5f5',
         borderColor: '#ccc',
@@ -40,20 +41,20 @@ function UserButton() {
 
     if (user) {
         return (
-            <CustomButton>
-                <Link href="/profile">
+            <Link href="/profile">
+                <CustomButton>
                     {user.displayName} 님
-                </Link>
-            </CustomButton>
+                </CustomButton>
+            </Link>
         );
     }
 
     return (
-        <CustomButton>
-            <Link href="/login">
+        <Link href="/login">
+            <CustomButton>
                 로그인/회원가입
-            </Link>
-        </CustomButton>
+            </CustomButton>
+        </Link>
     );
 }
 

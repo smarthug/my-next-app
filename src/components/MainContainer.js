@@ -19,7 +19,7 @@ export default function MainContainer({ children }) {
     return (
         <Box
             component="main"
-            sx={{ flexGrow: 1, marginTop: 8, width: '100%' }}
+            sx={{ flexGrow: 1, marginTop: 9, width: '100%' }}
         >
             <Container maxWidth="lg">
 
