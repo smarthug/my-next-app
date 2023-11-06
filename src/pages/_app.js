@@ -16,6 +16,8 @@ import {
 import { publicProvider } from 'wagmi/providers/public';
 import Appbar from '../components/Appbar';
 
+import MainContainer from '../components/MainContainer';
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     cronosTestnet,
@@ -48,7 +50,9 @@ function MyApp({ Component, pageProps }) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
         <Appbar />
-        <Component {...pageProps} />
+        <MainContainer>
+          <Component {...pageProps} />
+        </MainContainer>
       </RainbowKitProvider>
     </WagmiConfig>
   );
