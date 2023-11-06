@@ -12,6 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { Button } from "@mui/material";
+import { useRouter } from "next/router";
 // import { ITweet } from "../components/timeline";
 // import Tweet from "../components/tweet";
 
@@ -56,7 +57,8 @@ const Tweets = styled.div`
 export default function Profile() {
   const user = auth.currentUser;
   console.log(user)
-//   const [avatar, setAvatar] = useState(user?.photoURL);
+  const router = useRouter();
+  //   const [avatar, setAvatar] = useState(user?.photoURL);
   const [avatar, setAvatar] = useState(user?.photoURL);
   console.log(avatar)
   const [tweets, setTweets] = useState([]);
@@ -77,8 +79,8 @@ export default function Profile() {
   const fetchTweets = async () => {
     const tweetQuery = query(
       collection(db, "Projects"),
-    //   where("userId", "==", user?.uid),
-    //   orderBy("createdAt", "desc"),
+      //   where("userId", "==", user?.uid),
+      //   orderBy("createdAt", "desc"),
       limit(25)
     );
     const snapshot = await getDocs(tweetQuery);
@@ -99,6 +101,13 @@ export default function Profile() {
   useEffect(() => {
     fetchTweets();
   }, []);
+
+
+  function Logout() {
+
+    auth.signOut()
+    router.push('/login')
+  }
   return (
     <Wrapper>
       {/* <AvatarUpload htmlFor="avatar">
@@ -127,7 +136,7 @@ export default function Profile() {
           <Tweet key={tweet.id} {...tweet} />
         ))}
       </Tweets> */}
-      <Button onClick={() => auth.signOut()}>Sign out</Button>
+      <Button onClick={Logout}>Sign out</Button>
     </Wrapper>
   );
 }
