@@ -31,10 +31,10 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   ],
   [publicProvider()]
 );
-
+console.log(process.env.NEXT_PUBLIC_WALLETCONNECT_ID)
 const { connectors } = getDefaultWallets({
   appName: 'RainbowKit App',
-  projectId: 'YOUR_PROJECT_ID',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
   chains,
 });
 
