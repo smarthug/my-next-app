@@ -21,6 +21,8 @@ import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 
 import ProjectInputRow from '../../components/ProjectInputRow';
 import Category from '../../components/Category';
+import ProjectTitle from '../../components/ProjectTitle';
+import ProjectDescription from '../../components/ProjectDescription';
 
 
 
@@ -60,7 +62,12 @@ export default function ColumnsGrid() {
 
                 <ProjectInputRow label="프로젝트 제목" description="프로젝트의 주제, 창작물의 특징이 드러나는 멋진 제목을 붙여주세요.">
 
-                    <input type="text" placeholder="프로젝트 이름을 입력하세요" />
+                    <ProjectTitle />
+                </ProjectInputRow>
+
+                <ProjectInputRow label="프로젝트 요약" description="후원자 분들이 프로젝트를 빠르게 이해할 수 있도록 명확하고 간략하게 소개해주세요.">
+
+                    <ProjectDescription />
                 </ProjectInputRow>
 
             </CustomTabPanel>
