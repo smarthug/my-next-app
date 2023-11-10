@@ -12,7 +12,7 @@ import {
     Wrapper,
 } from "../components/auth-components";
 import GithubButton from "../components/github-btn";
-// import GoogleButton from "../components/google-btn";
+import GoogleButton from "../components/google-btn";
 
 import { useRouter } from 'next/router'
 import Link from "next/link";
@@ -80,9 +80,9 @@ export default function CreateAccount() {
                     <span>Do not have an account?</span>
                     <Link href="/join">Create one &rarr;</Link>
                 </Switcher>
-                <GithubButton />
+                {/* <GithubButton /> */}
                 
-                {/* <GoogleButton /> */}
+                <GoogleButton />
             </Wrapper>
         </BigWrapper>
     );

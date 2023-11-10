@@ -6,7 +6,7 @@ import { Chip, Container, MenuItem, Select } from '@mui/material';
 
 // import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
-import "react-image-gallery/styles/css/image-gallery.css";
+// import "react-image-gallery/styles/css/image-gallery.css";
 
 
 
@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 
 import ProjectInputRow from '../../components/ProjectInputRow';
+import Category from '../../components/Category';
 
 
 
@@ -54,20 +55,7 @@ export default function ColumnsGrid() {
                 <ProjectInputRow label="프로젝트 카테고리"
                     description="프로젝트 성격과 가장 일치하는 카테고리를 선택해주세요.적합하지 않을 경우 운영자에 의해 조정될 수 있습니다.">
 
-                    <Select
-                        labelId="demo-simple-select-helper-label"
-                        id="demo-simple-select-helper"
-                        value={10}
-                        label="Age"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
+                    <Category />
                 </ProjectInputRow>
 
                 <ProjectInputRow label="프로젝트 제목" description="프로젝트의 주제, 창작물의 특징이 드러나는 멋진 제목을 붙여주세요.">
