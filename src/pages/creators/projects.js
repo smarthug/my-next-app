@@ -1,14 +1,18 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import CreatedProjectCard from "../../components/CreatedProjectCard";
+import Link from "next/link";
 
 export default function Projects() {
 
 
     return (
         <div>
-            <h1>내가 만든 프로젝트</h1>
 
-            <Button variant="contained">프로젝트 만들기</Button>
+            <Typography variant="h4" component="div" gutterBottom>
+                내가 만든 프로젝트
+            </Typography>
+
+            <Button component={Link} href={"/creators/create"} variant="contained">프로젝트 만들기</Button>
 
             <Box
                 sx={{
