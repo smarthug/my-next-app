@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 
 import ProjectInputRow from './ProjectInputRow';
-// import ProjectVideo from './ProjectYoutube';
+import ProjectYoutube from './Youtube';
 import Category from './Category';
 import ProjectTitle from './ProjectTitle';
 import ProjectDescription from './ProjectDescription';
@@ -78,7 +78,7 @@ export default function ColumnsGrid() {
 
                 <ProjectInputRow label="프로젝트 대표 영상" description="2~3분 이내의 짧은 영상으로 프로젝트를 효과적으로 소개해보세요. 대표 영상을 등록하시면 프로젝트 상세에서 이미지와 함께 제공됩니다.">
 
-                    {/* <ProjectVideo /> */}
+                    <ProjectYoutube />
                     
                 </ProjectInputRow>
 

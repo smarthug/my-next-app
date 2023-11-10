@@ -39,7 +39,7 @@ export default function ProjectVideo() {
   return (
     <form noValidate autoComplete="off">
       <CssTextField
-        label="프로젝트 요약"
+        label="Youtube URL"
         variant="outlined"
         color="secondary"
         fullWidth
