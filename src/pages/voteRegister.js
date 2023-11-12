@@ -31,7 +31,8 @@ function Vote() {
     const [milestoneNum, setMilestoneNum] = useState(1);
     const [endBlockNum, setEndBlockNum] = useState();
     const [existVote, setExistVote] = useState([]);
-    const [fundAddress, setFundAddress] = useState("0xd7521ce0cda7383ea6000cb607d85179966e36c7");
+    const [fundInfo, setFundInfo] = useState();
+    const [fundAddress, setFundAddress] = useState("0x12ba42a0018412b635119200331d9e6b8d3b17e0");
 
     const fundABI = Contract.fundABI;
     
@@ -52,11 +53,9 @@ function Vote() {
       },[]);
 
       useEffect(() =>{
-        if(account.length > 0){
+        if(account.length > 0 && milestone.length == 0){
             getFundInfo();
-
         }
-
       },[account])
       
       
@@ -66,6 +65,7 @@ function Vote() {
           setAccount(address);
       }
       const handleMilestoneNum = (e) =>{
+        console.log(e.target.value);
           setMilestoneNum(e.target.value);
       }
       const handleTitle = (e) =>{
@@ -88,11 +88,15 @@ function Vote() {
                 let tempMilestone = [...milestone];
                 let tempDBMilestoneData = data.data().Milestone
                 for(let i = 1;i<=tempDBMilestoneData.length;i++){
-                    tempMilestone.push(i);
+                    tempMilestone.push({
+                      id: i,
+                      number: i
+                    });
                 }
                 setMilestone(tempMilestone);
                 console.log(tempMilestone);
                 setExistVote(data.data().Votes);
+                setFundInfo(data.data());
             }
           });
 
@@ -123,23 +127,31 @@ function Vote() {
         console.log(web3);
         contract = await new web3.eth.Contract(fundABI,fundAddress) ;
         let voteURL;
-        let tempVotes = [...existVote];
-        tempVotes[milestoneNum] = {
+        let tempVotes = new Array();
+        console.log(existVote);
+        if(existVote != undefined){
+          tempVotes = [...existVote];
+          tempVotes[milestoneNum] = {
+              VoteTitle: voteTitle,
+              VoteContent: voteContent,
+              VoteEndDate: voteEndDate.unix()
+          }
+        }else{
+          tempVotes.push({
             VoteTitle: voteTitle,
             VoteContent: voteContent,
-            VoteEndDate: voteEndDate
+            VoteEndDate: voteEndDate.unix()
+          })
         }
+        console.log(tempVotes);
         if (voteTitle.length > 0 && voteContent.length > 0) {
             const contentForUpload = {
                 VoteTitle: voteTitle,
                 VoteContent: voteContent,
-                VoteEndDate: voteEndDate
+                VoteEndDate: voteEndDate.unix()
             }
             const voteURI = await ipfsUploadMetadata(contentForUpload);
             voteURL = `https://${voteURI}.ipfs.nftstorage.link`;
-            var DB = await db.collection('Projects');
-            var temp = await DB.doc(account).set(tempVotes);
-            console.log("Set Vote Data success");
         }
 
         const encryptURL = await encrypt(voteURL.toString(), keyForAES);
@@ -150,11 +162,16 @@ function Vote() {
         let ret = await web3.eth.sendTransaction({
         from: account,
         to: fundAddress,
-        data: contract.methods.buildVote(voteEndDate.unix(),encryptURL,1).encodeABI(),//fundAddress, endBLock, option number, contentURL
+        data: contract.methods.buildVote(voteEndDate.unix(),encryptURL,milestoneNum).encodeABI(),//fundAddress, endBLock, option number, contentURL
         gas: '1000000'            
         })
-        .then(function(receipt){
-        console.log(receipt);
+        .then(async function(receipt){
+          console.log(receipt);
+          var DB = await db.collection('Projects');
+          var temp = await DB.doc(account).set({
+            Votes:tempVotes
+          }, { merge: true });
+          console.log("Set Vote Data success");
         });
     }
     const encrypt = (content, password) => AES.encrypt(JSON.stringify({ content }), password).toString()
@@ -187,7 +204,7 @@ function Vote() {
                 {
                     milestone.map((item, index) => {
                         return (
-                            <MenuItem key={index} value={item}>{item}</MenuItem>
+                            <MenuItem key={item.id} value={item.number}>{item.number}</MenuItem>
                         )
                     })
                 }

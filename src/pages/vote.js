@@ -4,12 +4,14 @@ import { ipfsUploadImage, ipfsUploadMetadata } from '../utils/ipfsUpload';
 import Contract from "../utils/Contract.json";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import axios from 'axios';
 import { AES, enc } from 'crypto-js';
+import db from '../utils/firebase.js';
 
 let web3;
 let contract;
@@ -25,7 +27,7 @@ function Vote() {
     const [milestoneNum, setMilestoneNum] = useState(1);
     const [endBlockNum, setEndBlockNum] = useState();
     const [existVote, setExistVote] = useState([]);
-    const [fundAddress, setFundAddress] = useState("0xd7521ce0cda7383ea6000cb607d85179966e36c7");
+    const [fundAddress, setFundAddress] = useState("0x12ba42a0018412b635119200331d9e6b8d3b17e0");
 
     const fundABI = Contract.fundABI;
     

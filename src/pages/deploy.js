@@ -49,12 +49,14 @@ function Deploy() {
     const [milestone, setMilestone] = useState([{
         id: 0
     }]);
+    const [initialRatio, setInitialRatio] = useState(0);
+    const [milestoneRatio, setMilestoneRatio] = useState([]);
     const [milestoneDesc, setMilestoneDesc] = useState([""]);
     const [milestoneDate, setMilestoneDate] = useState([""]);
     const [policy, setPolicy] = useState();
     const [searchTag, setSearchTag] = useState();
     const [website, setWebsite] = useState();
-    const [fundAddress, setFundAddress] = useState("0x27b987ef956c33396baf3bf102044bf41cd1b4c9");
+    const [fundAddress, setFundAddress] = useState("0x12ba42a0018412b635119200331d9e6b8d3b17e0");
 
     
     const fundABI = Contract.fundABI;
@@ -213,11 +215,23 @@ function Deploy() {
         let contentForUpload;
         let tempMilestone = new Array();
         let tempOption = new Array();
+        let tempRatioTotal = parseInt(initialRatio);
+        let tempRatio = new Array();
+        tempRatio.push(Number(initialRatio));
+        console.log(tempRatio);
         for(let i = 0;i<milestone.length;i++){
+          tempRatioTotal += parseInt(milestoneRatio[i]);
+          tempRatio.push(Number(milestoneRatio[i]));
             tempMilestone.push({
                 "Description": milestoneDesc[i],
-                "Date": milestoneDate[i].$d.toString()
+                "Date": milestoneDate[i].unix(),
+                "Ratio": milestoneRatio[i]
             })
+        }
+        console.log(tempRatio);
+        if(tempRatioTotal != 100){
+          alert("Total Fund Ratio has to be 100");
+          return 0;
         }
         for(let i = 0;i<option.length;i++){
             tempOption.push({
@@ -237,8 +251,8 @@ function Deploy() {
                 TeamDescription: teamContent,
                 Milestone: tempMilestone,
                 FundOption: tempOption,
-                FundStart:fundStart.$d.toString(),
-                FundEnd:fundEnd.$d.toString(),
+                FundStart:fundStart.unix(),
+                FundEnd:fundEnd.unix(),
                 FundGoal:goalAmount,
                 ImageURL:repImage,
                 VideoURL:repVideo,
@@ -253,7 +267,7 @@ function Deploy() {
         }
 
         const encryptURL = await encrypt(fundURL.toString(), keyForAES);
-        console.log(encryptURL);
+        console.log(fundURL);
         contract = await new web3.eth.Contract(fundABI,fundAddress) ;
 
         
@@ -262,21 +276,24 @@ function Deploy() {
         // string memory _baseURL,
         // uint256 _milestoneNum,
         // uint256 _saleEndBlock,
-        // uint256 _price,
+        // uint256[] memory _prices,
+        // uint256 _optionNum,
         // uint256 _goalAmount,
         // uint256[] memory _fundRatio,
         // address _feeGetter,
         // string memory _fundContent
         const goalBlock = parseInt(await web3.eth.getBlockNumber(),10) + 100;
         console.log(parseInt(goalBlock));
+        console.log(fundTitle, "FUND",fundURL,milestone.length+1,fundEnd.unix().toString(),price,option.length,goalAmount,tempRatio,account,encryptURL);
         
         let ret = await web3.eth.sendTransaction({
           from: account,
           to: fundAddress,
-          data: contract.methods.setInitialValue(fundTitle, "FUND",fundURL,milestoneNum,goalBlock.toString(),price,goalAmount,[10,80,10],account,encryptURL).encodeABI(),
-          gas: '1000000'            
+          data: contract.methods.setInitialValue(fundTitle, "FUND",fundURL,milestone.length+1,fundEnd.unix().toString(),price,option.length,goalAmount,tempRatio,account,encryptURL).encodeABI(),
+          gas: '2000000'            
           })
           .then(async function(receipt){
+            console.log(receipt);
             var DB = await db.collection('Projects');
             var temp = await DB.doc(account).set(contentForUpload);
             console.log("Set Init Value success");
@@ -365,7 +382,13 @@ function Deploy() {
           <DateTimePicker 
             label="fund end"
             value={fundEnd}
-            onChange={(newValue) => setFundEnd(newValue)}
+            onChange={(newValue) => {
+              setFundEnd(newValue);
+              let tempMilestoneDate = [...milestoneDate];
+              tempMilestoneDate[0] = newValue;
+              console.log(tempMilestoneDate);
+              setMilestoneDate(tempMilestoneDate)
+            }}
           />
         </LocalizationProvider>
         <TextField
@@ -419,7 +442,28 @@ function Deploy() {
         <Typography variant="h6" gutterBottom>
             Milestone Setting
         </Typography>
-        <button onClick={() =>setMoreMilestone()}>+</button>
+        <button onClick={() =>setMoreMilestone()}>+</button><br/>
+        <TextField
+            id="outlined-multiline-static"
+            multiline
+            value="Initial Fund Ratio"
+            rows={1}
+            disabled
+        />
+        <TextField
+            id="outlined-multiline-static"
+            label="Ratio"
+            multiline
+            value={initialRatio}
+            rows={1}
+            onChange={(e) => setInitialRatio(e.target.value)}
+        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker 
+            value={fundEnd}
+            disabled
+                />
+        </LocalizationProvider>
         {
             milestone.map((item, index) => {
                 return (
@@ -438,9 +482,23 @@ function Deploy() {
                             setMilestoneDesc(tempMilestoneDesc);
                         }}
                     />
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Milestone Fund Ratio"
+                        multiline
+                        value={milestoneRatio[index]}
+                        rows={1}
+                        onChange={(e) => {
+                            console.log(index);
+                            let tempMilestoneRatio = [...milestoneRatio];
+                            tempMilestoneRatio[index] = e.target.value;
+                            console.log(tempMilestoneRatio);
+                            setMilestoneRatio(tempMilestoneRatio);
+                        }}
+                    />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker 
-                        value={milestoneDate}
+                        value={milestoneDate[index]}
                         onChange={(newValue) => {
                             let tempMilestoneDate = [...milestoneDate];
                             tempMilestoneDate[index] = newValue;
