@@ -25,6 +25,7 @@ import Category from './Category';
 import ProjectTitle from './ProjectTitle';
 import ProjectDescription from './ProjectDescription';
 import ProjectImageUploader from './ProjectImageUploader';
+import RoadMap from './roadmap'
 
 
 
@@ -84,7 +85,7 @@ export default function ColumnsGrid() {
 
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                마일스톤
+                <RoadMap />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
                 신뢰와 안전
