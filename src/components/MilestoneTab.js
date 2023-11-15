@@ -120,7 +120,9 @@ function ProjectGoal() {
     };
 
     return (
-        <form noValidate autoComplete="off">
+        <form noValidate autoComplete="off" style={{
+            margin: "10px"
+        }}>
             <CssTextField
                 label="eth"
                 variant="outlined"
