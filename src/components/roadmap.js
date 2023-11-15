@@ -85,6 +85,17 @@ export default function OppositeContentTimeline() {
                 <TimelineSeparator>
                     <TimelineDot />
                     <StyledTimelineConnector />
+
+                </TimelineSeparator>
+                <RatioAndDetail />
+            </TimelineItem>
+            <TimelineItem>
+                <TimelineOppositeContent color="text.secondary">
+                    <VoteDatePicker />
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                    <TimelineDot />
+                    <StyledTimelineConnector />
                 </TimelineSeparator>
                 <RatioAndDetail />
             </TimelineItem>

@@ -44,12 +44,12 @@ export default function CustomizedInputs() {
         color="secondary"
         fullWidth
         multiline
-        rows={4}
+        rows={3}
         margin="normal"
         value={title}
         onChange={handleTitleChange}
         InputProps={{
-          endAdornment: <InputAdornment position="end">{`${title.length}/50`}</InputAdornment>,
+          // endAdornment: <InputAdornment position="end">{`${title.length}/50`}</InputAdornment>,
         }}
       />
    

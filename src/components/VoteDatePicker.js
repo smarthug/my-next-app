@@ -4,11 +4,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function BasicDatePicker() {
+export default function BasicDatePicker({label="투표일 지정"}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {/* <DemoContainer components={['DatePicker']}> */}
-        <DatePicker label="투표일 지정" />
+        <DatePicker label={label} />
       {/* </DemoContainer> */}
     </LocalizationProvider>
   );
