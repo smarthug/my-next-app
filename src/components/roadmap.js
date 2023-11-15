@@ -10,7 +10,7 @@ import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { FormControl, FormHelperText, InputAdornment, OutlinedInput, Typography, styled } from '@mui/material'
 
 import VoteDatePicker from './VoteDatePicker';
-
+import MilestoneDescription from './MilestoneDescription';
 
 
 // const StyledCardGameWrapper = styled(Paper)(({ theme }) => ({
@@ -119,6 +119,7 @@ function RatioAndDetail() {
         <TimelineContent>
             <FormControl sx={{ m: 0, width: '20%' }} variant="standard">
                 <OutlinedInput
+                    // size='small'
                     id="outlined-adornment-weight"
                     endAdornment={<InputAdornment position="end">%</InputAdornment>}
                     aria-describedby="outlined-weight-helper-text"
@@ -131,10 +132,11 @@ function RatioAndDetail() {
             {/* <Typography variant="h6" component="span">
                 25%
             </Typography> */}
-            <Typography>
+            {/* <Typography sx={{m:4}}>
 
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </Typography>
+            </Typography> */}
+            <MilestoneDescription />
         </TimelineContent>
     )
 }
