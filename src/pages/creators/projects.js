@@ -12,7 +12,7 @@ export default function Projects() {
                 내가 만든 프로젝트
             </Typography>
 
-            <Button component={Link} href={"/creators/create"} variant="contained">프로젝트 만들기</Button>
+            <Button component={Link} href={"/creators/deploy/basic"} variant="contained">프로젝트 만들기</Button>
 
             <Box
                 sx={{
@@ -20,8 +20,7 @@ export default function Projects() {
                     '& > *': { // This targets all immediate children of the Box
                         margin: 3, // This applies margin to all sides of the children
                     },
-                }
-                }
+                }}
             >
 
                 <CreatedProjectCard />

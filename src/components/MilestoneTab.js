@@ -9,7 +9,7 @@ import ProjectTitle from './ProjectTitle';
 import ProjectDescription from './ProjectDescription';
 import ProjectImageUploader from './ProjectImageUploader';
 
-import RoadMap from './roadmap'
+import RoadMap from './roadmap2'
 
 // import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
@@ -19,20 +19,35 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import VoteDatePicker from './VoteDatePicker'
 
+
+// import * as React from 'react';
+// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+function BasicDatePicker({ label = "투표일 지정" }) {
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* <DemoContainer components={['DatePicker']}> */}
+            <DatePicker label={label} />
+            {/* </DemoContainer> */}
+        </LocalizationProvider>
+    );
+}
+
 // 여기서 State 관리하자
 
 export default function BasicInfoTab() {
 
-    const [category, setCategory] = useState('');
-    const [subcategory, setSubcategory] = useState('');
+    const [milestoneNum, setMilestoneNum] = useState(2);
+    const [fundEndDate, setFundEndDate] = useState('');
 
-    const handleCategoryChange = (event) => {
-        setCategory(event.target.value);
+    const handleMilestoneNumChange = (event) => {
+        setMilestoneNum(event.target.value);
     };
 
-    const handleSubcategoryChange = (event) => {
-        setSubcategory(event.target.value);
-    };
+
 
     return (
 
@@ -46,7 +61,7 @@ export default function BasicInfoTab() {
 
             <ProjectInputRow label="펀딩 일정" description="설정한 일시가 되면 펀딩이 자동 시작됩니다. 펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.">
 
-                <CustomSelect />
+                <CustomSelect setFundEndDate={setFundEndDate} />
             </ProjectInputRow>
 
             <ProjectInputRow label="마일스톤 설정" description="마일스톤의 갯수, 투표 일시, 금액 비율을 설정해주세요">
@@ -58,24 +73,20 @@ export default function BasicInfoTab() {
                     <Select
                         labelId="category-label"
                         id="category-select"
-                        value={category}
-                        onChange={handleCategoryChange}
+                        value={milestoneNum}
+                        onChange={handleMilestoneNumChange}
                         label="갯수"
                     >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={'category1'}>1</MenuItem>
-                        <MenuItem value={'category2'}>2</MenuItem>
-                        <MenuItem value={'category3'}>3</MenuItem>
-                        <MenuItem value={'category4'}>4</MenuItem>
-                        <MenuItem value={'category5'}>5</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
+                        <MenuItem value={3}>3</MenuItem>
+                        <MenuItem value={4}>4</MenuItem>
+                        <MenuItem value={5}>5</MenuItem>
                         {/* Add more MenuItem components as needed */}
                     </Select>
                 </StyledFormControl>
             </ProjectInputRow>
 
-            <RoadMap />
+            <RoadMap fundEndDate={fundEndDate} milestoneNum={milestoneNum} />
         </>
     )
 
@@ -152,27 +163,13 @@ const StyledFormControl = styled(FormControl)`
   min-width: 120px;
 `;
 
-function CustomSelect() {
-    const [category, setCategory] = useState('');
-    const [subcategory, setSubcategory] = useState('');
-
-    const handleCategoryChange = (event) => {
-        setCategory(event.target.value);
-    };
-
-    const handleSubcategoryChange = (event) => {
-        setSubcategory(event.target.value);
-    };
-
+function CustomSelect({ setFundEndDate }) {
     return (
         <Box
             sx={{
                 width: '100%',
-
                 display: 'flex',
-            }
-
-            }
+            }}
         >
             <StyledFormControl sx={{
                 flexGrow: 1,
@@ -185,7 +182,13 @@ function CustomSelect() {
                     flexGrow: 1,
                 }}
                 variant="outlined">
-                <VoteDatePicker label="종료일" />
+                {/* <VoteDatePicker label="종료일" /> */}
+
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    {/* <DemoContainer components={['DatePicker']}> */}
+                    <DatePicker label={"종료일"} onChange={setFundEndDate} />
+                    {/* </DemoContainer> */}
+                </LocalizationProvider>
 
             </StyledFormControl>
         </Box >
