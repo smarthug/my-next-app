@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Tabs, Tab } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const NavTabs = () => {
   const router = useRouter();
@@ -19,6 +20,34 @@ const NavTabs = () => {
         return 0;
     }
   };
+
+  useEffect(() => {
+    const handleWindowClose = (e) => {
+        var confirmationMessage = 'Are you sure you want to leave?';
+        e.returnValue = confirmationMessage;
+        return confirmationMessage;
+    };
+
+    // Add event listener for the beforeunload event
+    window.addEventListener('beforeunload', handleWindowClose);
+
+    // Function to confirm navigation
+    const handleRouteChange = (url, { shallow }) => {
+        if (!window.confirm('Are you sure you want to leave?')) {
+            router.events.emit('routeChangeError');
+            throw `Route change to ${url} was aborted (this error can be safely ignored).`;
+        }
+    };
+
+    // Add event listener for route changes in Next.js
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    // Clean up the event listeners
+    return () => {
+        window.removeEventListener('beforeunload', handleWindowClose);
+        router.events.off('routeChangeStart', handleRouteChange);
+    };
+}, [router]);
 
   return (
     <Tabs value={currentTab()} aria-label="Navigation Tabs">
