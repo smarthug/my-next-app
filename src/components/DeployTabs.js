@@ -10,12 +10,14 @@ const NavTabs = () => {
   // A function to match the current route with the tab value
   const currentTab = () => {
     switch (router.pathname) {
-      case '/':
+      case '/creators/projects':
         return 0;
       case '/creators/deploy/basic':
         return 1;
       case '/creators/deploy/milestone':
         return 2;
+      case '/creators/deploy/options':
+        return 3;
       default:
         return 0;
     }
@@ -23,9 +25,9 @@ const NavTabs = () => {
 
   useEffect(() => {
     const handleWindowClose = (e) => {
-        var confirmationMessage = 'Are you sure you want to leave?';
-        e.returnValue = confirmationMessage;
-        return confirmationMessage;
+      var confirmationMessage = 'Are you sure you want to leave?';
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
     };
 
     // Add event listener for the beforeunload event
@@ -33,10 +35,10 @@ const NavTabs = () => {
 
     // Function to confirm navigation
     const handleRouteChange = (url, { shallow }) => {
-        if (!window.confirm('Are you sure you want to leave?')) {
-            router.events.emit('routeChangeError');
-            throw `Route change to ${url} was aborted (this error can be safely ignored).`;
-        }
+      if (!window.confirm('Are you sure you want to leave?')) {
+        router.events.emit('routeChangeError');
+        throw `Route change to ${url} was aborted (this error can be safely ignored).`;
+      }
     };
 
     // Add event listener for route changes in Next.js
@@ -44,14 +46,14 @@ const NavTabs = () => {
 
     // Clean up the event listeners
     return () => {
-        window.removeEventListener('beforeunload', handleWindowClose);
-        router.events.off('routeChangeStart', handleRouteChange);
+      window.removeEventListener('beforeunload', handleWindowClose);
+      router.events.off('routeChangeStart', handleRouteChange);
     };
-}, [router]);
+  }, [router]);
 
   return (
     <Tabs value={currentTab()} aria-label="Navigation Tabs">
-      <Link href="/" passHref>
+      <Link href="/creators/projects" passHref>
         <Tab label="Home" />
       </Link>
       <Link href="/creators/deploy/basic" passHref>
@@ -59,6 +61,9 @@ const NavTabs = () => {
       </Link>
       <Link href="/creators/deploy/milestone" passHref>
         <Tab label="milestone" />
+      </Link>
+      <Link href="/creators/deploy/options" passHref>
+        <Tab label="options" />
       </Link>
     </Tabs>
   );
