@@ -1,16 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Unstable_Grid2';
-import { Chip, Container, MenuItem, Select } from '@mui/material';
 
-// import ImageGallery from "react-image-gallery";
-// import stylesheet if you're not already using CSS @import
-// import "react-image-gallery/styles/css/image-gallery.css";
-
-
-
-// import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
@@ -18,13 +8,6 @@ import { useState } from 'react';
 // import Box from '@mui/material/Box';
 
 import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
-
-import ProjectInputRow from './ProjectInputRow';
-import ProjectYoutube from './Youtube';
-import Category from './Category';
-import ProjectTitle from './ProjectTitle';
-import ProjectDescription from './ProjectDescription';
-import ProjectImageUploader from './ProjectImageUploader';
 
 import BasicInfoTab from './BasicInfoTab';
 // import RoadMap from './roadmap'
