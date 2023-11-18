@@ -9,10 +9,15 @@ import { useState } from 'react';
 
 import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 
-import BasicInfoTab from '../../../components/BasicInfoTab';
+// import BasicInfoTab from '../../../components/BasicInfoTab';
 // import RoadMap from './roadmap'
 // import MilestoneTab from './MilestoneTab'
 import DeployTabs from '../../../components/DeployTabs';
+
+
+import dynamic from "next/dynamic";
+
+const BasicInfoTab = dynamic(() => import("../../../components/BasicInfoTab"), { ssr: false });
 
 
 export default function ColumnsGrid() {
