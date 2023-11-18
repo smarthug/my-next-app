@@ -26,6 +26,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import useFundStore from '../utils/store'
+
 function BasicDatePicker({ label = "투표일 지정" }) {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -119,19 +121,19 @@ const CssTextField = styled(TextField)({
 
 // 마지막 붙는거에 , 원화로 환산 금액으로 보여주기
 function ProjectGoal() {
-    const [title, setTitle] = useState('');
-    const [subTitle, setSubTitle] = useState('');
+    const goalAmount = useFundStore(state => state.goalAmount);
+    const setGoalAmount = useFundStore(state => state.setGoalAmount);
+    // const [title, setTitle] = useState();
+
 
     const handleTitleChange = (event) => {
-        setTitle(event.target.value);
+        setGoalAmount(event.target.value);
     };
 
-    const handleSubTitleChange = (event) => {
-        setSubTitle(event.target.value);
-    };
+
 
     return (
-        <form noValidate autoComplete="off" style={{
+        <Box style={{
             margin: "10px"
         }}>
             <CssTextField
@@ -139,16 +141,16 @@ function ProjectGoal() {
                 variant="outlined"
                 color="secondary"
                 fullWidth
-
+                type='number'
                 margin="normal"
-                value={title}
+                value={goalAmount}
                 onChange={handleTitleChange}
                 InputProps={{
                     //   endAdornment: <InputAdornment position="end">{`${title.length}/50`}</InputAdornment>,
                 }}
             />
 
-        </form>
+        </Box>
     );
 }
 
