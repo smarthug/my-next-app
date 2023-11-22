@@ -29,6 +29,12 @@ const useFundStore = create((set) => ({
 
     prices: [],
     setPrices: (prices) => set({ prices: prices }),
+
+    // optionObjArray: [],
+    // setOptionObjArray: (optionObjArray) => set({ optionObjArray: optionObjArray }),
+
+    options: [],
+    setOptions: (options) => set({ options: options }),
 }))
 
 export default useFundStore
