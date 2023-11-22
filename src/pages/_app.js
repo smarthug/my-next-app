@@ -2,6 +2,8 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
+
+
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
   arbitrum,
@@ -17,6 +19,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import Appbar from '../components/Appbar';
 
 import MainContainer from '../components/MainContainer';
+import { FundStoreInitializer } from '../utils/store';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -48,10 +51,12 @@ const wagmiConfig = createConfig({
 function MyApp({ Component, pageProps }) {
   return (
     <WagmiConfig config={wagmiConfig}>
+      <FundStoreInitializer />
       <RainbowKitProvider chains={chains}>
         <Appbar />
         <MainContainer>
           <Component {...pageProps} />
+
         </MainContainer>
       </RainbowKitProvider>
     </WagmiConfig>
