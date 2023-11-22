@@ -7,8 +7,9 @@ import Tab from '@mui/material/Tab';
 import { useState } from 'react';
 // import Box from '@mui/material/Box';
 
-import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
+import { Card, CardContent, Avatar, Typography, Button, Divider } from '@mui/material';
 import DeployTabs from '../../../components/DeployTabs';
+import DeployButton from '../../../components/DeployButton';
 
 // import BasicInfoTab from '../../../components/BasicInfoTab';
 // import RoadMap from './roadmap'
@@ -20,24 +21,21 @@ const MilestoneTab = dynamic(() => import("../../../components/MilestoneTab"), {
 
 
 
+
+
 export default function MilestonePage() {
 
-    const [value, setValue] = useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+  
 
 
 
     return (
         <Box sx={{ width: '100%', marginTop: "64px" }}>
-            <Typography variant="h4" component="div" gutterBottom>
-                프로젝트 기획
-            </Typography>
+            <DeployButton />
 
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-               <DeployTabs />
+                <DeployTabs />
             </Box>
 
             <Box sx={{ p: 3 }} >

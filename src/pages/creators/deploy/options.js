@@ -9,6 +9,7 @@ import { useState } from 'react';
 
 import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 import DeployTabs from '../../../components/DeployTabs';
+import DeployButton from '../../../components/DeployButton';
 
 // import BasicInfoTab from '../../../components/BasicInfoTab';
 // import RoadMap from './roadmap'
@@ -32,9 +33,7 @@ export default function MilestonePage() {
 
     return (
         <Box sx={{ width: '100%', marginTop: "64px" }}>
-            <Typography variant="h4" component="div" gutterBottom>
-                프로젝트 기획
-            </Typography>
+             <DeployButton />
 
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                <DeployTabs />

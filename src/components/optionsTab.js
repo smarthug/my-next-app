@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, IconButton, Checkbox, Box, Grid, Button,
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
+import useFundStore from '../utils/store';
 
 // Styling the card with a border and padding
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -26,7 +27,10 @@ const initialOptions = [
 ];
 
 function OptionsContainer() {
-    const [options, setOptions] = useState(initialOptions);
+    // const [options, setOptions] = useState(initialOptions);
+    const options = useFundStore(state => state.options);
+    const setOptions = useFundStore(state => state.setOptions);
+
 
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState(0);
@@ -155,6 +159,7 @@ function OptionsContainer() {
                     </Box>
                 </Grid>
             </Grid>
+            {/* <Button variant="contained" sx={{ width: "100%" }}>펀딩하기</Button> */}
             {/* <Divider sx={{ marginTop: "48px" }} /> */}
         </Box>
     );

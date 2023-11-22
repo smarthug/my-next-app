@@ -32,7 +32,7 @@ export default function BasicInfoTab() {
             </ProjectInputRow>
             <ProjectInputRow label="프로젝트 대표 이미지" description="후원자들이 프로젝트의 내용을 쉽게 파악하고 좋은 인상을 받을 수 있도록 이미지 가이드라인을 따라 주세요.">
 
-                {/* <ProjectImageUploader /> */}
+                <ProjectImageUploader />
             </ProjectInputRow>
 
             <ProjectInputRow label="프로젝트 대표 영상" description="2~3분 이내의 짧은 영상으로 프로젝트를 효과적으로 소개해보세요. 대표 영상을 등록하시면 프로젝트 상세에서 이미지와 함께 제공됩니다.">

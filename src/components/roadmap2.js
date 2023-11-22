@@ -20,6 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import dayjs from 'dayjs';
+import useFundStore from '../utils/store';
 
 
 // const StyledCardGameWrapper = styled(Paper)(({ theme }) => ({
@@ -75,6 +76,10 @@ const StyledTimelineConnector = styled(TimelineConnector)(({ theme }) => ({
 
 export default function RoadMap({ fundEndDate, milestoneNum }) {
     // const [milestones, setMilestones] = useState([]);
+    const fundRatio = useFundStore(state => state.fundRatio);
+    const setFundRatio = useFundStore(state => state.setFundRatio);
+
+
 
     const milestones = Array(milestoneNum - 2).fill(0).map((_, i) => {
         return {
@@ -85,6 +90,30 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
         }
     }
     )
+
+
+    function handleFirstMilestoneRatioChange(event) {
+
+        const tmpRatio = [...fundRatio]
+        const ratio = event.target.value;
+
+
+        tmpRatio[0] = ratio
+        // setFundRatio([ratio, ...fundRatio.slice(1, fundRatio.length)])
+        setFundRatio([...tmpRatio])
+    }
+
+    function handleLastMilestoneRatioChange(event) {
+
+        const tmpRatio = [...fundRatio]
+        const ratio = event.target.value;
+
+
+        tmpRatio[milestoneNum - 1] = ratio
+        // setFundRatio([ratio, ...fundRatio.slice(1, fundRatio.length)])
+        setFundRatio([...tmpRatio])
+
+    }
 
 
     return (
@@ -108,6 +137,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                             inputProps={{
                                 'aria-label': 'weight',
                             }}
+                            onChange={handleFirstMilestoneRatioChange}
 
                         // value={detail}
                         />
@@ -118,6 +148,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                         label="마일스톤 요약"
                         variant="outlined"
                         color="secondary"
+                        type='number'
                         fullWidth
                         multiline
                         rows={3}
@@ -143,7 +174,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                             <TimelineDot />
                             <StyledTimelineConnector />
                         </TimelineSeparator>
-                        <RatioAndDetail />
+                        <RatioAndDetail index={index} />
                     </TimelineItem>
                 )
             }
@@ -159,38 +190,66 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                     <TimelineDot />
                     {/* <StyledTimelineConnector /> */}
                 </TimelineSeparator>
-                <RatioAndDetail />
+                <TimelineContent>
+                    <FormControl sx={{ m: 0, width: '20%' }} variant="standard">
+                        <OutlinedInput
+                            // size='small'
+                            id="outlined-adornment-weight"
+                            endAdornment={<InputAdornment position="end">%</InputAdornment>}
+                            aria-describedby="outlined-weight-helper-text"
+                            inputProps={{
+                                'aria-label': 'weight',
+                            }}
+                            onChange={handleLastMilestoneRatioChange}
+
+                        // value={detail}
+                        />
+
+                    </FormControl>
+
+                    <MilestoneDescription />
+                </TimelineContent>
             </TimelineItem>
         </Timeline>
     );
 }
 
 
-function RatioAndDetail({ detail }) {
+function RatioAndDetail({ detail, index }) {
+    console.log(index)
+
+
+    function handleMilestoneRatioChange(event) {
+        const fundRatio = useFundStore.getState().fundRatio;
+        const tmpRatio = [...fundRatio]
+        const ratio = event.target.value;
+
+
+        tmpRatio[index + 1] = ratio
+        // setFundRatio([ratio, ...fundRatio.slice(1, fundRatio.length)])
+        // setFundRatio([...tmpRatio])
+        useFundStore.setState({ fundRatio: [...tmpRatio] })
+
+    }
 
     return (
         <TimelineContent>
             <FormControl sx={{ m: 0, width: '20%' }} variant="standard">
                 <OutlinedInput
                     // size='small'
+                    type='number'
                     id="outlined-adornment-weight"
                     endAdornment={<InputAdornment position="end">%</InputAdornment>}
                     aria-describedby="outlined-weight-helper-text"
                     inputProps={{
                         'aria-label': 'weight',
                     }}
+                    onChange={handleMilestoneRatioChange}
 
-                // value={detail}
                 />
-                {/* <FormHelperText id="outlined-weight-helper-text">Weight</FormHelperText> */}
-            </FormControl>
-            {/* <Typography variant="h6" component="span">
-                25%
-            </Typography> */}
-            {/* <Typography sx={{m:4}}>
 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </Typography> */}
+            </FormControl>
+
             <MilestoneDescription />
         </TimelineContent>
     )
