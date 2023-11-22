@@ -84,7 +84,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
     const milestones = Array(milestoneNum - 2).fill(0).map((_, i) => {
         return {
             id: i,
-            ratio: 0,
+            ratio: fundRatio[i + 1],
             detail: "",
             // voteDate: dayjs().add(i, 'month').toDate()
         }
@@ -138,6 +138,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                                 'aria-label': 'weight',
                             }}
                             onChange={handleFirstMilestoneRatioChange}
+                            defaultValue={fundRatio[0]}
 
                         // value={detail}
                         />
@@ -174,7 +175,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                             <TimelineDot />
                             <StyledTimelineConnector />
                         </TimelineSeparator>
-                        <RatioAndDetail index={index} />
+                        <RatioAndDetail index={index} ratio={milestone.ratio} />
                     </TimelineItem>
                 )
             }
@@ -203,6 +204,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                             onChange={handleLastMilestoneRatioChange}
 
                         // value={detail}
+                            defaultValue={fundRatio[milestoneNum - 1]}
                         />
 
                     </FormControl>
@@ -215,7 +217,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
 }
 
 
-function RatioAndDetail({ detail, index }) {
+function RatioAndDetail({ detail, index, ratio }) {
     console.log(index)
 
 
@@ -245,7 +247,7 @@ function RatioAndDetail({ detail, index }) {
                         'aria-label': 'weight',
                     }}
                     onChange={handleMilestoneRatioChange}
-
+                    defaultValue={ratio}
                 />
 
             </FormControl>

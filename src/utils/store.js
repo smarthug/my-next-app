@@ -1,40 +1,47 @@
-import { create } from 'zustand'
+import create from 'zustand'
+import { useEffect } from 'react'
 
-// uint256 _goalAmount,
-// uint _saleEndTime,
-
-// uint256 _milestoneNum,
-// uint256[] memory _fundRatio,
-
-// uint256 _optionNum,
-// uint256[] memory _prices,
-
-// 여기서 , localstorage에 임시 저장된거 있으면 , 불러와서 넣어주기
-
+// Define the store without initial localStorage values
 const useFundStore = create((set) => ({
     goalAmount: 0,
-    setGoalAmount: (goalAmount) => set({ goalAmount: goalAmount }),
+    setGoalAmount: (goalAmount) => set({ goalAmount }),
 
     saleEndTime: '',
-    setSaleEndTime: (saleEndTime) => set({ saleEndTime: saleEndTime }),
+    setSaleEndTime: (saleEndTime) => set({ saleEndTime }),
 
     milestoneNum: 2,
-    setMilestoneNum: (milestoneNum) => set({ milestoneNum: milestoneNum }),
+    setMilestoneNum: (milestoneNum) => set({ milestoneNum }),
 
     fundRatio: [],
-    setFundRatio: (fundRatio) => set({ fundRatio: fundRatio }),
+    setFundRatio: (fundRatio) => set({ fundRatio }),
 
     optionNum: 0,
-    setOptionNum: (optionNum) => set({ optionNum: optionNum }),
+    setOptionNum: (optionNum) => set({ optionNum }),
 
     prices: [],
-    setPrices: (prices) => set({ prices: prices }),
-
-    // optionObjArray: [],
-    // setOptionObjArray: (optionObjArray) => set({ optionObjArray: optionObjArray }),
+    setPrices: (prices) => set({ prices }),
 
     options: [],
-    setOptions: (options) => set({ options: options }),
-}))
+    setOptions: (options) => set({ options }),
+}));
 
-export default useFundStore
+// Component to initialize the store
+export const FundStoreInitializer = () => {
+    const setGoalAmount = useFundStore((state) => state.setGoalAmount);
+    const setSaleEndTime = useFundStore((state) => state.setSaleEndTime);
+    const setMilestoneNum = useFundStore((state) => state.setMilestoneNum);
+    const setFundRatio = useFundStore((state) => state.setFundRatio);
+    const setOptions = useFundStore((state) => state.setOptions);
+
+    useEffect(() => {
+        setGoalAmount(localStorage.getItem("goalAmount") ?? 0);
+        setSaleEndTime(localStorage.getItem("saleEndTime") ?? '');
+        setMilestoneNum(localStorage.getItem("milestoneNum") ?? 2);
+        setFundRatio(JSON.parse(localStorage.getItem("fundRatio")) ?? []);
+        setOptions(JSON.parse(localStorage.getItem("options")) ?? []);
+    }, []);
+
+    return null;
+};
+
+export default useFundStore;

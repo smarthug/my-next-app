@@ -27,6 +27,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import useFundStore from '../utils/store'
+import dayjs from 'dayjs';
 
 function BasicDatePicker({ label = "투표일 지정" }) {
     return (
@@ -43,7 +44,9 @@ function BasicDatePicker({ label = "투표일 지정" }) {
 export default function BasicInfoTab() {
 
     // const [milestoneNum, setMilestoneNum] = useState(2);
-    const [fundEndDate, setFundEndDate] = useState('');
+    // const [fundEndDate, setFundEndDate] = useState(localStorage.getItem('saleEndTime') || dayjs().add(1, 'day').format('YYYY-MM-DD'));
+    // const [fundEndDate, setFundEndDate] = useState('');
+    const [fundEndDate, setFundEndDate] = useState(dayjs(localStorage.getItem('saleEndTime') ?? ''));
 
     const milestoneNum = useFundStore(state => state.milestoneNum);
     const setMilestoneNum = useFundStore(state => state.setMilestoneNum);
@@ -66,7 +69,7 @@ export default function BasicInfoTab() {
 
             <ProjectInputRow label="펀딩 일정" description="설정한 일시가 되면 펀딩이 자동 시작됩니다. 펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.">
 
-                <CustomSelect setFundEndDate={setFundEndDate} />
+                <CustomSelect setFundEndDate={setFundEndDate} fundEndDate={fundEndDate} />
             </ProjectInputRow>
 
             <ProjectInputRow label="마일스톤 설정" description="마일스톤의 갯수, 투표 일시, 금액 비율을 설정해주세요">
@@ -168,7 +171,7 @@ const StyledFormControl = styled(FormControl)`
   min-width: 120px;
 `;
 
-function CustomSelect({ setFundEndDate }) {
+function CustomSelect({ fundEndDate ,setFundEndDate }) {
 
     const setSaleEndTime = useFundStore(state => state.setSaleEndTime);
 
@@ -199,7 +202,7 @@ function CustomSelect({ setFundEndDate }) {
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     {/* <DemoContainer components={['DatePicker']}> */}
-                    <DatePicker label={"종료일"} onChange={handleFundEndDateChange} />
+                    <DatePicker label={"종료일"} onChange={handleFundEndDateChange} value={fundEndDate} />
                     {/* </DemoContainer> */}
                 </LocalizationProvider>
 

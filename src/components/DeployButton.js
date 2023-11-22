@@ -1,14 +1,27 @@
 import { Box, Button, Typography } from '@mui/material';
-import useFundStore from '../utils/store';
+import useFundStore, { FundStoreInitializer } from '../utils/store';
+import { useLayoutEffect } from 'react';
 
-
+// FundStoreInitializer()
 export default function DeployButton() {
     // const goalAmount = useFundStore(state => state.goalAmount)
 
     function tempSave() {
         console.log("임시 저장")
 
+
+
         // zustand 에 있던것들 가져와서 , local storage 에 저장해주기
+
+        const {goalAmount, options,fundRatio,saleEndTime,milestoneNum } = useFundStore.getState()
+
+        localStorage.setItem('goalAmount', goalAmount)
+        localStorage.setItem('options', JSON.stringify(options))
+        localStorage.setItem('fundRatio', JSON.stringify(fundRatio))
+        localStorage.setItem('saleEndTime', saleEndTime)
+        localStorage.setItem('milestoneNum', milestoneNum)
+
+        // console.log('saleEndTime', saleEndTime.getTime())
     }
 
     function deployProject() {
@@ -51,6 +64,13 @@ export default function DeployButton() {
     }
 
 
+    useLayoutEffect(() => {
+        // FundStoreInitializer()
+
+
+    }, [])
+
+
     return (
         <Box
             sx={{
@@ -79,15 +99,14 @@ export default function DeployButton() {
             <Box
                 sx={{
                     marginRight: '20px',
-                    '& > *': {
-                        margin: '0 15px',
-                    },
-
+                
 
                 }}
             >
 
-                {/* <Button size='large' variant='outlined' onClick={tempSave} >임시 저장</Button> */}
+                <Button sx={{
+                    marginRight: '20px',
+                }} size='large' variant='outlined' onClick={tempSave} >임시 저장</Button>
                 <Button size='large' variant='contained' onClick={deployProject} >제출</Button>
 
             </Box>
