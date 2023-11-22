@@ -13,6 +13,7 @@ import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 // import RoadMap from './roadmap'
 // import MilestoneTab from './MilestoneTab'
 import DeployTabs from '../../../components/DeployTabs';
+import DeployButton from '../../../components/DeployButton';
 
 
 import dynamic from "next/dynamic";
@@ -32,9 +33,8 @@ export default function ColumnsGrid() {
 
     return (
         <Box sx={{ width: '100%', marginTop: "64px" }}>
-            <Typography variant="h4" component="div" gutterBottom>
-                프로젝트 기획
-            </Typography>
+           <DeployButton />
+
 
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <DeployTabs />

@@ -42,8 +42,11 @@ function BasicDatePicker({ label = "투표일 지정" }) {
 
 export default function BasicInfoTab() {
 
-    const [milestoneNum, setMilestoneNum] = useState(2);
+    // const [milestoneNum, setMilestoneNum] = useState(2);
     const [fundEndDate, setFundEndDate] = useState('');
+
+    const milestoneNum = useFundStore(state => state.milestoneNum);
+    const setMilestoneNum = useFundStore(state => state.setMilestoneNum);
 
     const handleMilestoneNumChange = (event) => {
         setMilestoneNum(event.target.value);
@@ -166,6 +169,14 @@ const StyledFormControl = styled(FormControl)`
 `;
 
 function CustomSelect({ setFundEndDate }) {
+
+    const setSaleEndTime = useFundStore(state => state.setSaleEndTime);
+
+    function handleFundEndDateChange(value) {
+        setFundEndDate(value);
+        setSaleEndTime(value);
+    }
+
     return (
         <Box
             sx={{
@@ -188,7 +199,7 @@ function CustomSelect({ setFundEndDate }) {
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     {/* <DemoContainer components={['DatePicker']}> */}
-                    <DatePicker label={"종료일"} onChange={setFundEndDate} />
+                    <DatePicker label={"종료일"} onChange={handleFundEndDateChange} />
                     {/* </DemoContainer> */}
                 </LocalizationProvider>
 

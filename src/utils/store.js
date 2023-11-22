@@ -15,10 +15,10 @@ const useFundStore = create((set) => ({
     goalAmount: 0,
     setGoalAmount: (goalAmount) => set({ goalAmount: goalAmount }),
 
-    saleEndTime: 0,
+    saleEndTime: '',
     setSaleEndTime: (saleEndTime) => set({ saleEndTime: saleEndTime }),
 
-    milestoneNum: 0,
+    milestoneNum: 2,
     setMilestoneNum: (milestoneNum) => set({ milestoneNum: milestoneNum }),
 
     fundRatio: [],
