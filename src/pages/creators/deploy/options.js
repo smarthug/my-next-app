@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 import DeployTabs from '../../../components/DeployTabs';
-import DeployButton from '../../../components/DeployButton';
+import DeployButton from '@/components/DeployButton';
 
 // import BasicInfoTab from '../../../components/BasicInfoTab';
 // import RoadMap from './roadmap'
