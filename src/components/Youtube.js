@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import { TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
+import useFundStore from '../utils/store';
 
 const CssTextField = styled(TextField)({
   '& label.Mui-focused': {
@@ -25,15 +26,11 @@ const CssTextField = styled(TextField)({
 });
 
 export default function ProjectVideo() {
-  const [title, setTitle] = useState('');
-  const [subTitle, setSubTitle] = useState('');
+  const videoURL = useFundStore(state => state.videoURL);
+  const setVideoURL = useFundStore(state => state.setVideoURL);
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleSubTitleChange = (event) => {
-    setSubTitle(event.target.value);
+  const handleVideoURLChange = (event) => {
+    setVideoURL(event.target.value);
   };
 
   return (
@@ -45,10 +42,10 @@ export default function ProjectVideo() {
         fullWidth
       
         margin="normal"
-        value={title}
-        onChange={handleTitleChange}
+        value={videoURL}
+        onChange={handleVideoURLChange}
         InputProps={{
-          endAdornment: <InputAdornment position="end">{`${title.length}/50`}</InputAdornment>,
+          endAdornment: <InputAdornment position="end">{`${videoURL.length}/50`}</InputAdornment>,
         }}
       />
    

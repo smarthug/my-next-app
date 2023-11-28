@@ -13,7 +13,12 @@ import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 // import RoadMap from './roadmap'
 // import MilestoneTab from './MilestoneTab'
 import DeployTabs from '../../../components/DeployTabs';
-import DeployButton from '../../../components/DeployButton';
+// import DeployButton from '../../../components/DeployButton';
+// import dynamic from 'next/dynamic'
+
+const DeployButton = dynamic(() => import('../../../components/DeployButton'), {
+  ssr: false
+})
 
 
 import dynamic from "next/dynamic";

@@ -9,13 +9,18 @@ import { useState } from 'react';
 
 import { Card, CardContent, Avatar, Typography, Button, Divider } from '@mui/material';
 import DeployTabs from '../../../components/DeployTabs';
-import DeployButton from '../../../components/DeployButton';
+// import DeployButton from '../../../components/DeployButton';
+import dynamic from 'next/dynamic'
+
+const DeployButton = dynamic(() => import('../../../components/DeployButton'), {
+  ssr: false
+})
 
 // import BasicInfoTab from '../../../components/BasicInfoTab';
 // import RoadMap from './roadmap'
 // import MilestoneTab from '../../../components/MilestoneTab'
 
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
 const MilestoneTab = dynamic(() => import("../../../components/MilestoneTab"), { ssr: false });
 

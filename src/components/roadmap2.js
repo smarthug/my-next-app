@@ -78,6 +78,9 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
     // const [milestones, setMilestones] = useState([]);
     const fundRatio = useFundStore(state => state.fundRatio);
     const setFundRatio = useFundStore(state => state.setFundRatio);
+    
+    const milestoneDesc = useFundStore(state => state.milestoneDesc)
+    const setMilestoneDesc = useFundStore(state => state.setMilestoneDesc);
 
 
 
@@ -85,7 +88,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
         return {
             id: i,
             ratio: fundRatio[i + 1],
-            detail: "",
+            detail: milestoneDesc[i + 1],
             // voteDate: dayjs().add(i, 'month').toDate()
         }
     }
@@ -96,6 +99,9 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
 
         const tmpRatio = [...fundRatio]
         const ratio = event.target.value;
+        const tmpDesc = [...milestoneDesc]
+        const detail = 
+        console.log(milestones);
 
 
         tmpRatio[0] = ratio
@@ -107,12 +113,12 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
 
         const tmpRatio = [...fundRatio]
         const ratio = event.target.value;
+        console.log(milestones);
 
 
         tmpRatio[milestoneNum - 1] = ratio
         // setFundRatio([ratio, ...fundRatio.slice(1, fundRatio.length)])
         setFundRatio([...tmpRatio])
-
     }
 
 
@@ -120,7 +126,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
         <Timeline position="right">
             <TimelineItem>
                 <TimelineOppositeContent color="text.secondary">
-                    <InitialDatePicker value={fundEndDate} />
+                    <InitialDatePicker value={dayjs(fundEndDate)} />
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                     <TimelineDot />
@@ -155,7 +161,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                         rows={3}
                         margin="normal"
                         value={"펀딩 종료일에 받게될 초기 자본금입니다"}
-                        // onChange={handleTitleChange}
+                        // onChange={handleFirstMilestoneDescChange}
                         InputProps={{
                             // endAdornment: <InputAdornment position="end">{`${title.length}/50`}</InputAdornment>,
                         }}
@@ -175,7 +181,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
                             <TimelineDot />
                             <StyledTimelineConnector />
                         </TimelineSeparator>
-                        <RatioAndDetail index={index} ratio={milestone.ratio} />
+                        <RatioAndDetail index={index} ratio={milestone.ratio} detail={milestone.detail} />
                     </TimelineItem>
                 )
             }
@@ -209,7 +215,7 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
 
                     </FormControl>
 
-                    <MilestoneDescription />
+                    <MilestoneDescription detail={milestoneDesc[milestoneNum - 1]} index={milestoneNum-2} />
                 </TimelineContent>
             </TimelineItem>
         </Timeline>
@@ -219,12 +225,14 @@ export default function RoadMap({ fundEndDate, milestoneNum }) {
 
 function RatioAndDetail({ detail, index, ratio }) {
     console.log(index)
+    console.log(detail)
 
 
     function handleMilestoneRatioChange(event) {
         const fundRatio = useFundStore.getState().fundRatio;
         const tmpRatio = [...fundRatio]
         const ratio = event.target.value;
+        console.log(event.target.value);
 
 
         tmpRatio[index + 1] = ratio
@@ -252,7 +260,7 @@ function RatioAndDetail({ detail, index, ratio }) {
 
             </FormControl>
 
-            <MilestoneDescription />
+            <MilestoneDescription index={index} detail={detail}/>
         </TimelineContent>
     )
 }
@@ -265,7 +273,7 @@ function InitialDatePicker({ label = "펀딩 종료일", value }) {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             {/* <DemoContainer components={['DatePicker']}> */}
-            <DatePicker label={label} value={value} disabled />
+            <DatePicker label={label} value={dayjs(value)} disabled />
             {/* </DemoContainer> */}
         </LocalizationProvider>
     );

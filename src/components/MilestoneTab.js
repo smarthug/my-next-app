@@ -41,12 +41,16 @@ function BasicDatePicker({ label = "투표일 지정" }) {
 
 // 여기서 State 관리하자
 
-export default function BasicInfoTab() {
+export default function MilestoneTab() {
 
     // const [milestoneNum, setMilestoneNum] = useState(2);
     // const [fundEndDate, setFundEndDate] = useState(localStorage.getItem('saleEndTime') || dayjs().add(1, 'day').format('YYYY-MM-DD'));
     // const [fundEndDate, setFundEndDate] = useState('');
-    const [fundEndDate, setFundEndDate] = useState(dayjs(localStorage.getItem('saleEndTime') ?? ''));
+    const saleEndTime = useFundStore(state => state.saleEndTime);
+    const setSaleEndTime = useFundStore(state => state.setSaleEndTime);
+    const saleStartTime = useFundStore(state => state.saleStartTime);
+    const setSaleStartTime = useFundStore(state => state.setSaleStartTime);
+    // const [fundEndDate, setFundEndDate] = useState(dayjs(localStorage.getItem('saleEndTime') ?? ''));
 
     const milestoneNum = useFundStore(state => state.milestoneNum);
     const setMilestoneNum = useFundStore(state => state.setMilestoneNum);
@@ -69,7 +73,7 @@ export default function BasicInfoTab() {
 
             <ProjectInputRow label="펀딩 일정" description="설정한 일시가 되면 펀딩이 자동 시작됩니다. 펀딩 시작 전까지 날짜를 변경할 수 있고, 즉시 펀딩을 시작할 수도 있습니다.">
 
-                <CustomSelect setFundEndDate={setFundEndDate} fundEndDate={fundEndDate} />
+                <CustomSelect setFundEndDate={setSaleEndTime} fundEndDate={saleEndTime} setFundStartDate={setSaleStartTime} fundStartDate={saleStartTime} />
             </ProjectInputRow>
 
             <ProjectInputRow label="마일스톤 설정" description="마일스톤의 갯수, 투표 일시, 금액 비율을 설정해주세요">
@@ -94,7 +98,7 @@ export default function BasicInfoTab() {
                 </StyledFormControl>
             </ProjectInputRow>
 
-            <RoadMap fundEndDate={fundEndDate} milestoneNum={milestoneNum} />
+            <RoadMap fundEndDate={saleEndTime} milestoneNum={milestoneNum} />
         </>
     )
 
@@ -171,13 +175,21 @@ const StyledFormControl = styled(FormControl)`
   min-width: 120px;
 `;
 
-function CustomSelect({ fundEndDate ,setFundEndDate }) {
+function CustomSelect({ fundEndDate ,setFundEndDate, fundStartDate, setFundStartDate }) {
 
     const setSaleEndTime = useFundStore(state => state.setSaleEndTime);
+    const setSaleStartTime = useFundStore(state => state.setSaleStartTime);
 
     function handleFundEndDateChange(value) {
+        console.log(value);
         setFundEndDate(value);
         setSaleEndTime(value);
+    }
+    
+    function handleFundStartDateChange(value) {
+        console.log(value);
+        setFundStartDate(value);
+        setSaleStartTime(value);
     }
 
     return (
@@ -190,7 +202,10 @@ function CustomSelect({ fundEndDate ,setFundEndDate }) {
             <StyledFormControl sx={{
                 flexGrow: 1,
             }} variant="outlined">
-                <VoteDatePicker label="시작일" />
+                {/* <VoteDatePicker label="시작일" /> */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker label={"시작일"} onChange={handleFundStartDateChange} value={dayjs(fundStartDate)} />
+                </LocalizationProvider>
             </StyledFormControl>
 
             <StyledFormControl
@@ -202,7 +217,7 @@ function CustomSelect({ fundEndDate ,setFundEndDate }) {
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     {/* <DemoContainer components={['DatePicker']}> */}
-                    <DatePicker label={"종료일"} onChange={handleFundEndDateChange} value={fundEndDate} />
+                    <DatePicker label={"종료일"} onChange={handleFundEndDateChange} value={dayjs(fundEndDate)} />
                     {/* </DemoContainer> */}
                 </LocalizationProvider>
 

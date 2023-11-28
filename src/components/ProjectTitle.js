@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
+import useFundStore from '../utils/store';
 
 const CssTextField = styled(TextField)({
   '& label.Mui-focused': {
@@ -24,8 +25,11 @@ const CssTextField = styled(TextField)({
 });
 
 export default function CustomizedInputs() {
-  const [title, setTitle] = useState('');
-  const [subTitle, setSubTitle] = useState('');
+  const title = useFundStore(state => state.title);
+  const setTitle = useFundStore(state => state.setTitle);
+  
+  const subTitle = useFundStore(state => state.subTitle);
+  const setSubTitle = useFundStore(state => state.setSubTitle);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);

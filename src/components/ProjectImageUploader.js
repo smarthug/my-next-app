@@ -2,6 +2,8 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import useFundStore from '../utils/store';
+import { ipfsUploadImage, ipfsUploadMetadata } from '../utils/ipfsUpload';
 
 const thumbsContainer = {
     display: 'flex',
@@ -36,17 +38,36 @@ const img = {
 
 
 export default function ProjectImageUploader(props) {
+    const imageURL = useFundStore(state => state.imageURL);
+    const setImageURL = useFundStore(state => state.setImageURL);
     const [files, setFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
             'image/*': []
         },
         onDrop: acceptedFiles => {
+            handleIPFS();
             setFiles(acceptedFiles.map(file => Object.assign(file, {
                 preview: URL.createObjectURL(file)
             })));
         }
     });
+
+    const handleIPFS = async() => {
+        console.log(files);
+        const cid = await ipfsUploadImage(files);
+        // setImageCID(cid + "/" + files[0].name);
+
+        //`https://ipfs.io/ipfs/${imageCID}`
+
+        const imageCID = `${cid}`
+
+        // const image = `https://ipfs.io/ipfs/${imageCID}`;
+        const image = `https://${imageCID}.ipfs.nftstorage.link`;
+        // const image = `https://${imageCID}`; 
+        console.log(image);
+        setImageURL(image);
+    }
 
     const thumbs = files.map(file => (
         <div style={thumb} key={file.name}>

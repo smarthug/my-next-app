@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import { TextareaAutosize } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
+import useFundStore from '../utils/store';
 
 const CssTextField = styled(TextField)({
   '& label.Mui-focused': {
@@ -25,15 +26,11 @@ const CssTextField = styled(TextField)({
 });
 
 export default function CustomizedInputs() {
-  const [title, setTitle] = useState('');
-  const [subTitle, setSubTitle] = useState('');
+  const fundContent = useFundStore(state => state.fundContent);
+  const setFundContent = useFundStore(state => state.setFundContent);
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const handleSubTitleChange = (event) => {
-    setSubTitle(event.target.value);
+  const handleFundContentChange = (event) => {
+    setFundContent(event.target.value);
   };
 
   return (
@@ -46,10 +43,10 @@ export default function CustomizedInputs() {
         multiline
         rows={4}
         margin="normal"
-        value={title}
-        onChange={handleTitleChange}
+        value={fundContent}
+        onChange={handleFundContentChange}
         InputProps={{
-          endAdornment: <InputAdornment position="end">{`${title.length}/50`}</InputAdornment>,
+          endAdornment: <InputAdornment position="end">{`${fundContent.length}/50`}</InputAdornment>,
         }}
       />
    

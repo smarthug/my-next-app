@@ -9,7 +9,12 @@ import { useState } from 'react';
 
 import { Card, CardContent, Avatar, Typography, Button } from '@mui/material';
 import DeployTabs from '../../../components/DeployTabs';
-import DeployButton from '../../../components/DeployButton';
+// import DeployButton from '../../../components/DeployButton';
+// import dynamic from 'next/dynamic'
+
+const DeployButton = dynamic(() => import('../../../components/DeployButton'), {
+  ssr: false
+})
 
 // import BasicInfoTab from '../../../components/BasicInfoTab';
 // import RoadMap from './roadmap'
