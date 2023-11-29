@@ -1,0 +1,293 @@
+import { Box, Button, Typography } from '@mui/material';
+import Web3 from "web3";
+import { useNetwork, useSigner } from "wagmi";
+import { ethers } from "ethers";
+import { ipfsUploadImage, ipfsUploadMetadata } from '../utils/ipfsUpload';
+import Contract from "../utils/Contract.json";
+import useFundStore, { FundStoreInitializer } from '../utils/store';
+import { AES, enc } from 'crypto-js';
+import { useLayoutEffect } from 'react';
+import db from '../utils/firebase.js';
+
+const keyForAES = "thisiskey";
+// FundStoreInitializer()
+export default function DeployButton() {
+    // const goalAmount = useFundStore(state => state.goalAmount)
+    
+    web3 = new Web3(window.ethereum);
+    const setFundContract = useFundStore(state => state.setFundContract);
+    // const { chain } = useNetwork()
+    // // const { data: signer, isError, isLoading } = useSigner();
+    // const signer = useSigner();
+    
+    const fundABI = Contract.fundABI;
+    const fundManagerAddress = Contract.fundManagerAddress;
+    const fundManagerABI = Contract.fundManagerABI;
+
+    function tempSave() {
+        console.log("임시 저장")
+
+
+
+        // zustand 에 있던것들 가져와서 , local storage 에 저장해주기
+
+        const {title, subTitle,category1, category2, fundContent, teamContent, milestoneDesc, imageURL, videoURL, policy, website, wallet,goalAmount, options,fundRatio,saleStartTime,saleEndTime,milestoneNum } = useFundStore.getState()
+
+        console.log(title);
+        console.log(subTitle);
+        console.log(category1)
+        console.log(category2)
+        console.log(fundContent)
+        console.log(teamContent)
+        console.log(milestoneDesc)
+        console.log(imageURL)
+        console.log(videoURL)
+        console.log(policy)
+        console.log(website)
+        console.log(wallet)
+
+        localStorage.setItem('goalAmount', goalAmount)
+        localStorage.setItem('options', JSON.stringify(options))
+        localStorage.setItem('fundRatio', JSON.stringify(fundRatio))
+        localStorage.setItem('category1', category1)
+        localStorage.setItem('category2', category2)
+        localStorage.setItem('saleEndTime', saleEndTime)
+        localStorage.setItem('saleStartTime', saleStartTime)
+        localStorage.setItem('milestoneNum', milestoneNum)
+        localStorage.setItem('title', title)
+        localStorage.setItem('subTitle', subTitle)
+        localStorage.setItem('fundContent', fundContent)
+        localStorage.setItem('teamContent', teamContent)
+        localStorage.setItem('milestoneDesc', JSON.stringify(milestoneDesc))
+        localStorage.setItem('imageURL', imageURL)
+        localStorage.setItem('videoURL', videoURL)
+        localStorage.setItem('policy', policy)
+        localStorage.setItem('website', website)
+        localStorage.setItem('wallet', wallet)
+
+        // console.log('saleEndTime', saleEndTime.getTime())
+    }
+
+    async function deployProject() {
+        console.log("제출")
+
+        // zustand 에 있던것들로 , set Initial value 호출하기 
+
+        // uint256 _goalAmount,
+        // uint _saleEndTime,
+
+        // uint256 _milestoneNum,
+        // uint256[] memory _fundRatio,
+
+        // uint256 _optionNum,
+        // uint256[] memory _prices,
+
+        // Getting non-reactive fresh state
+
+        //Deploy Contract
+        // const managerContract = await new ethers.Contract(fundManagerAddress,fundManagerABI, signer) ;
+    
+        // console.log("contract deploy")
+
+        // const contractWithSigner = managerContract.connect(signer)
+        // console.log(signer);
+
+        // const tx = await contractWithSigner.deployNFTFund(title,)
+        // const rc = await tx.wait()
+
+        // console.log(tx);
+        // console.log(rc);
+        const {title, subTitle, category1, category2,fundContent, teamContent, milestoneDesc, imageURL, videoURL, policy, website, wallet,goalAmount, options,fundRatio,saleStartTime,saleEndTime,milestoneNum } = useFundStore.getState()
+        console.log(saleEndTime);
+        console.log(saleStartTime);
+        const account = window.ethereum.selectedAddress;
+        const managerContract = await new web3.eth.Contract(fundManagerABI,fundManagerAddress) ;
+        
+        let ret = await web3.eth.sendTransaction({
+          from: account,
+          to: fundManagerAddress,
+          data: managerContract.methods.deployNFTFund(title,account).encodeABI(),
+          gas: '1000000'            
+          })
+          .then(function(receipt){
+            
+            console.log("Deploy success")
+            console.log(receipt.logs[0].address);
+            setFundContract(receipt.logs[0].address);
+            
+          });
+        const fundContract = useFundStore.getState().fundContract;
+        console.log(useFundStore.getState())
+
+        const optionNum = options.length
+        const prices = options.map(option => option.price)
+        // console.log(prices)
+
+        const sumOfFund = useFundStore.getState().fundRatio.reduce((a, b) => a + Number(b), 0)
+        // console.log(sumOfFund)
+
+        console.log(title);
+        console.log(subTitle);
+        console.log(category1)
+        console.log(category2)
+        console.log(fundContent)
+        console.log(teamContent)
+        console.log(milestoneDesc)
+        console.log(imageURL)
+        console.log(videoURL)
+        console.log(policy)
+        console.log(website)
+        console.log(wallet)
+        console.log("goalAmount", goalAmount)
+        console.log("saleStartTime", saleStartTime.unix())
+        console.log("saleEndTime", saleEndTime.unix())
+        console.log("milestoneNum", milestoneNum)
+        console.log("fundRatio", fundRatio)
+        console.log("milestoneDesc", milestoneDesc)
+        console.log("optionNum", optionNum)
+        console.log("options", options)
+        console.log("prices", prices)
+        
+        if(sumOfFund !== 100) {
+            alert("펀딩 비율의 합이 100이 아닙니다.")
+            return
+        }
+        let fundURL;
+        let contentForUpload;
+        let tempMilestone = new Array();
+        let tempOption = new Array();
+        let tempRatioTotal = parseInt(fundRatio[0]);
+        let tempRatio = new Array();
+        tempRatio.push(Number(fundRatio[0]));
+        console.log(tempRatio);
+        for(let i = 0;i<milestoneDesc.length;i++){
+          tempRatioTotal += parseInt(fundRatio[i]);
+          tempRatio.push(Number(fundRatio[i]));
+            tempMilestone.push({
+                "Description": milestoneDesc[i],
+                // "Date": milestoneDate[i].unix(),
+                "Ratio": fundRatio[i]
+            })
+        }
+        
+        for(let i = 0;i<options.length;i++){
+            tempOption.push({
+                "Description": options[i].optionTitle,
+                "Price": prices[i]
+            })
+        }
+
+        
+        if (title.length > 0 && fundContent.length > 0) {
+            contentForUpload = {
+                name:title,
+                image:imageURL,
+                description:fundContent,
+                Category1:category1,
+                Category2:category2,
+                Title: title,
+                Description: fundContent,
+                TeamDescription: teamContent,
+                Milestone: tempMilestone,
+                FundOption: tempOption,
+                FundStart:saleStartTime.unix(),
+                FundEnd:saleEndTime.unix(),
+                FundGoal:goalAmount,
+                ImageURL:imageURL,
+                VideoURL:videoURL,
+                Policy:policy,
+                // SearchTag:searchTag,
+                Website:website,
+                Wallet:wallet
+            }
+            const fundURI = await ipfsUploadMetadata(contentForUpload);
+            fundURL = `https://${fundURI}.ipfs.nftstorage.link`;
+            
+        }
+
+        const encryptURL = await encrypt(fundURL.toString(), keyForAES);
+        console.log(fundURL);
+        let contract = await new web3.eth.Contract(fundABI,fundContract) ;
+
+        
+        // string memory name_,
+        // string memory symbol_,
+        // string memory _baseURL,
+        // uint256 _milestoneNum,
+        // uint256 _saleEndBlock,
+        // uint256[] memory _prices,
+        // uint256 _optionNum,
+        // uint256 _goalAmount,
+        // uint256[] memory _fundRatio,
+        // address _feeGetter,
+        // string memory _fundContent
+        const goalBlock = parseInt(await web3.eth.getBlockNumber(),10) + 100;
+        console.log(parseInt(goalBlock));
+        
+        ret = await web3.eth.sendTransaction({
+          from: account,
+          to: fundContract,
+          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,saleEndTime.unix().toString(),prices,optionNum,goalAmount,fundRatio,account,encryptURL).encodeABI(),
+          gas: '2000000'            
+          })
+          .then(async function(receipt){
+            console.log(receipt);
+            var DB = await db.collection('Projects');
+            var temp = await DB.doc(account).set(contentForUpload);
+            console.log("Set Init Value success");
+          });
+    }
+    
+    const encrypt = (content, password) => AES.encrypt(JSON.stringify({ content }), password).toString()
+    const decrypt = (crypted, password) => JSON.parse(AES.decrypt(crypted, password).toString(enc.Utf8)).content
+
+
+
+
+
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                // textAlign: 'center',
+                // justifyContent: 'center',
+                height: '100px',
+                // bgcolor: '#f5f5f5',
+                borderRadius: '10px',
+                // marginBottom: '20px'
+            }}
+        >
+            <Typography variant="h4" component="div" gutterBottom>
+                투표 등록
+            </Typography>
+
+            <Box
+                sx={{
+                    flexGrow: 1,
+                }}
+            >
+
+            </Box>
+
+            <Box
+                sx={{
+                    marginRight: '20px',
+                
+
+                }}
+            >
+
+                <Button sx={{
+                    marginRight: '20px',
+                }} size='large' variant='outlined' onClick={tempSave} >임시 저장</Button>
+                <Button size='large' variant='contained' onClick={deployProject} >투표 시작</Button>
+
+            </Box>
+
+            {/* <Button size='large' variant='outlined'>임시 저장</Button> */}
+
+        </Box>
+
+    )
+}
