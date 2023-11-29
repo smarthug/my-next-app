@@ -33,19 +33,6 @@ export default function DeployButton() {
 
         const {title, subTitle,category1, category2, fundContent, teamContent, milestoneDesc, imageURL, videoURL, policy, website, wallet,goalAmount, options,fundRatio,saleStartTime,saleEndTime,milestoneNum } = useFundStore.getState()
 
-        console.log(title);
-        console.log(subTitle);
-        console.log(category1)
-        console.log(category2)
-        console.log(fundContent)
-        console.log(teamContent)
-        console.log(milestoneDesc)
-        console.log(imageURL)
-        console.log(videoURL)
-        console.log(policy)
-        console.log(website)
-        console.log(wallet)
-
         localStorage.setItem('goalAmount', goalAmount)
         localStorage.setItem('options', JSON.stringify(options))
         localStorage.setItem('fundRatio', JSON.stringify(fundRatio))
@@ -242,7 +229,12 @@ export default function DeployButton() {
     const decrypt = (crypted, password) => JSON.parse(AES.decrypt(crypted, password).toString(enc.Utf8)).content
 
 
+    useLayoutEffect(() => {
+        // FundStoreInitializer()
+        
 
+
+    }, [])
 
 
     return (
