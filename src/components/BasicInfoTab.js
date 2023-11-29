@@ -4,10 +4,13 @@ import { useState } from 'react';
 
 import ProjectInputRow from './ProjectInputRow';
 import ProjectYoutube from './Youtube';
+import ProjectWebsite from '@/components/Website';
 import Category from './Category';
 import ProjectTitle from './ProjectTitle';
 import ProjectDescription from './ProjectDescription';
+import TeamDescription from '@/components/TeamDescription';
 import ProjectImageUploader from './ProjectImageUploader';
+import Policy from '@/components/Policy';
 
 export default function BasicInfoTab() {
 
@@ -30,6 +33,12 @@ export default function BasicInfoTab() {
 
                 <ProjectDescription />
             </ProjectInputRow>
+
+            <ProjectInputRow label="팀 소개" description="2~3문장으로 창작자님의 이력과 간단한 소개를 써주세요.">
+
+                <TeamDescription />
+            </ProjectInputRow>
+
             <ProjectInputRow label="프로젝트 대표 이미지" description="후원자들이 프로젝트의 내용을 쉽게 파악하고 좋은 인상을 받을 수 있도록 이미지 가이드라인을 따라 주세요.">
 
                 <ProjectImageUploader />
@@ -39,6 +48,17 @@ export default function BasicInfoTab() {
 
                 <ProjectYoutube />
 
+            </ProjectInputRow>
+
+            <ProjectInputRow label="웹사이트 주소" description="창작자님의 웹사이트를 소개해보세요.">
+
+                <ProjectWebsite />
+
+            </ProjectInputRow>
+
+            <ProjectInputRow label="정책" description="후원자 분들이 프로젝트를 빠르게 이해할 수 있도록 명확하고 간략하게 소개해주세요.">
+
+                <Policy />
             </ProjectInputRow>
 
         </>
