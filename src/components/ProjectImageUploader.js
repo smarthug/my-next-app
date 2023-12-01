@@ -39,6 +39,7 @@ const img = {
 
 export default function ProjectImageUploader(props) {
     const imageURL = useFundStore(state => state.imageURL);
+    console.log("imageURL", imageURL )
     const setImageURL = useFundStore(state => state.setImageURL);
     const [files, setFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
@@ -89,6 +90,8 @@ export default function ProjectImageUploader(props) {
 
     return (
         <section className="container">
+
+            
             <div {...getRootProps({ className: 'dropzone' })}>
                 <input {...getInputProps()} />
                 <div>최소 1개 , 최대 5개의 이미지</div>
@@ -96,6 +99,16 @@ export default function ProjectImageUploader(props) {
             <div style={thumbsContainer}>
                 {thumbs}
             </div>
+
+            {
+                imageURL && (
+                    <div>
+                        <img src={imageURL} alt="Picture of the author" width={500} height={500} />
+                    </div>
+                )
+
+
+            }
         </section>
     );
 }
