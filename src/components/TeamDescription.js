@@ -25,7 +25,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
-export default function CustomizedInputs() {
+export default function CustomizedInputs({ label = "팀 소개"}) {
   const teamContent = useFundStore(state => state.teamContent);
   const setTeamContent = useFundStore(state => state.setTeamContent);
 

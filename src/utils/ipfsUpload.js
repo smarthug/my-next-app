@@ -3,6 +3,7 @@ import { NFTStorage, Blob } from "nft.storage";
 
 // 공유 계정 , minterlab , nft storage 공유 계졍 
 // const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEJiNDRBZDUzODJEYjNiRDI5NzM2NkFDY2M4OTNBN0YxNGNjYkVDNjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3NDAzNzQ1MTcyMiwibmFtZSI6Im1pbnRlci1sYWIifQ.0VBCGCisVmuydkVgTSFc1RFkkh8gkyQJMKAye5VvOYw";
+// const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDEzYUUyRmYxRTViZTYyMEIyMjFmNzA3YjI5MzY5OEYzMTA0REIyNmYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3MzIzMzE3MjMxNiwibmFtZSI6InRlc3QifQ.W-z5b0Yl1JzwvX9xwKv4EOdfUKN8bzPGDbij4m7x4R8"
 const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDEzYUUyRmYxRTViZTYyMEIyMjFmNzA3YjI5MzY5OEYzMTA0REIyNmYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3MzIzMzE3MjMxNiwibmFtZSI6InRlc3QifQ.W-z5b0Yl1JzwvX9xwKv4EOdfUKN8bzPGDbij4m7x4R8"
 
 const client = new NFTStorage({ token: API_KEY });
