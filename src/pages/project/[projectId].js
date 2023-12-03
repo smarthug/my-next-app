@@ -8,7 +8,7 @@ import { Chip, Container } from '@mui/material';
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import ImageGallery from '../components/ImageGallery'
+import ImageGallery from '@/components/ImageGallery'
 
 // import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
