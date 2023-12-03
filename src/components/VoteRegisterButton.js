@@ -44,6 +44,33 @@ const keyForAES = "thisiskey";
 // FundStoreInitializer()
 export default function DeployButton() {
 
+    // const website = useFundStore(state => state.website);
+    // const setWebsite = useFundStore(state => state.setWebsite);
+
+    // const handleVideoURLChange = (event) => {
+    //     setWebsite(event.target.value);
+    // };
+
+    const [voteTitle, setVoteTitle] = useState("")
+
+    const handleVoteTitleChange = (event) => {
+        setVoteTitle(event.target.value);
+    }
+
+    const [voteContent, setVoteContent] = useState("")
+    const handleVoteContentChange = (event) => {
+        setVoteContent(event.target.value);
+    }
+
+    const [voteEndDate, setVoteEndDate] = useState("")
+
+    const handleVoteEndDateChange = (event) => {
+        setVoteEndDate(event);
+    }
+
+
+
+
     // 여기다가 만들기 , 필요할 것들
     // const goalAmount = useFundStore(state => state.goalAmount)
 
@@ -62,41 +89,9 @@ export default function DeployButton() {
 
 
 
-        // zustand 에 있던것들 가져와서 , local storage 에 저장해주기
-
-        const { title, subTitle, category1, category2, fundContent, teamContent, milestoneDesc, imageURL, videoURL, policy, website, wallet, goalAmount, options, fundRatio, saleStartTime, saleEndTime, milestoneNum } = useFundStore.getState()
-
-        console.log(title);
-        console.log(subTitle);
-        console.log(category1)
-        console.log(category2)
-        console.log(fundContent)
-        console.log(teamContent)
-        console.log(milestoneDesc)
-        console.log(imageURL)
-        console.log(videoURL)
-        console.log(policy)
-        console.log(website)
-        console.log(wallet)
-
-        localStorage.setItem('goalAmount', goalAmount)
-        localStorage.setItem('options', JSON.stringify(options))
-        localStorage.setItem('fundRatio', JSON.stringify(fundRatio))
-        localStorage.setItem('category1', category1)
-        localStorage.setItem('category2', category2)
-        localStorage.setItem('saleEndTime', saleEndTime)
-        localStorage.setItem('saleStartTime', saleStartTime)
-        localStorage.setItem('milestoneNum', milestoneNum)
-        localStorage.setItem('title', title)
-        localStorage.setItem('subTitle', subTitle)
-        localStorage.setItem('fundContent', fundContent)
-        localStorage.setItem('teamContent', teamContent)
-        localStorage.setItem('milestoneDesc', JSON.stringify(milestoneDesc))
-        localStorage.setItem('imageURL', imageURL)
-        localStorage.setItem('videoURL', videoURL)
-        localStorage.setItem('policy', policy)
-        localStorage.setItem('website', website)
-        localStorage.setItem('wallet', wallet)
+        console.log(voteTitle);
+        console.log(voteContent);
+        console.log(voteEndDate);
 
         // console.log('saleEndTime', saleEndTime.getTime())
     }
@@ -339,13 +334,13 @@ export default function DeployButton() {
                     <StyledFormControl sx={{
                         flexGrow: 1,
                     }} variant="outlined">
-                        <InputLabel id="category-label">갯수</InputLabel>
+                        <InputLabel id="category-label">순서</InputLabel>
                         <Select
                             labelId="category-label"
                             id="category-select"
                             value={1}
                             onChange={() => { }}
-                            label="갯수"
+                            label="순서"
                         >
                             <MenuItem value={2}>2</MenuItem>
                             <MenuItem value={3}>3</MenuItem>
@@ -365,10 +360,10 @@ export default function DeployButton() {
                         fullWidth
 
                         margin="normal"
-                        value={website}
-                        onChange={handleVideoURLChange}
+                        value={voteTitle}
+                        onChange={handleVoteTitleChange}
                         InputProps={{
-                            endAdornment: <InputAdornment position="end">{`${website.length}/50`}</InputAdornment>,
+                            endAdornment: <InputAdornment position="end">{`${voteTitle.length}/50`}</InputAdornment>,
                         }}
                     />
                 </ProjectInputRow>
@@ -383,10 +378,10 @@ export default function DeployButton() {
                         multiline
                         rows={4}
                         margin="normal"
-                        value={teamContent}
-                        onChange={handleTeamContentChange}
+                        value={voteContent}
+                        onChange={handleVoteContentChange}
                         InputProps={{
-                            endAdornment: <InputAdornment position="end">{`${teamContent.length}/300`}</InputAdornment>,
+                            endAdornment: <InputAdornment position="end">{`${voteContent.length}/300`}</InputAdornment>,
                         }}
                     />
                 </ProjectInputRow>
@@ -395,7 +390,7 @@ export default function DeployButton() {
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/* <DemoContainer components={['DatePicker']}> */}
-                        <DatePicker label={"투표 기한"} />
+                        <DatePicker label={"투표 기한"} onChange={handleVoteEndDateChange} value={voteEndDate} />
                         {/* </DemoContainer> */}
                     </LocalizationProvider>
                 </ProjectInputRow>

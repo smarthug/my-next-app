@@ -2,8 +2,20 @@ import { Box, Button, Typography } from "@mui/material";
 import CreatedProjectCard from "@/components/CreatedProjectCard";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import VoteRegisterRoadMap from "@/components/VoteRegisterRoadMap";
-import VoteRegisterButton from "@/components/VoteRegisterButton";
+import dynamic from "next/dynamic";
+// import VoteRegisterRoadMap from "@/components/VoteRegisterRoadMap";
+// import VoteRegisterButton from "@/components/VoteRegisterButton";
+
+
+
+
+const VoteRegisterButton = dynamic(() => import('@/components/VoteRegisterButton'), {
+  ssr: false
+})
+
+
+
+const VoteRegistration = dynamic(() => import("@/components/VoteRegistration"), { ssr: false });
 
 export default function Projects() {
     const {
@@ -37,28 +49,25 @@ export default function Projects() {
     return (
         <div>
 
-            {/* <Typography variant="h4" component="div" gutterBottom>
-                내가 만든 프로젝트 관리 페이지 , vote Register
-            </Typography> */}
 
 
 
-       
             <Box sx={{ width: '100%', marginTop: "64px" }}>
-                {/* <DeployButton /> */}
-                {/* <VoteRegisterButton /> */}
 
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    {/* <DeployTabs /> */}
-                </Box>
+                <VoteRegisterButton />
 
-                <Box sx={{ p: 3 }} >
-                {/* <VoteRegisterRoadMap milestoneNum={5} /> */}
-
-                </Box>
+              
 
             </Box>
 
         </div>
     )
 }
+
+
+// export default function Test(){
+
+//     return(
+//         <h1>test</h1>
+//     )
+// }
