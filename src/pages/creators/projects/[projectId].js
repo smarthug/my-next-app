@@ -1,8 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useState, useEffect } from 'react';
 import CreatedProjectCard from "@/components/CreatedProjectCard";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import db from '@/utils/firebase.js';
 // import VoteRegisterRoadMap from "@/components/VoteRegisterRoadMap";
 // import VoteRegisterButton from "@/components/VoteRegisterButton";
 
@@ -23,7 +25,9 @@ export default function Projects() {
     } = useRouter();
 
     console.log(projectId);
-    // 요걸로 , 프로젝트에 대한 정보 가져오고 , 
+    // 요걸로 , 프로젝트에 대한 정보 가져오고 ,
+    
+    
 
     //vote title 
     // vote description
@@ -54,7 +58,7 @@ export default function Projects() {
 
             <Box sx={{ width: '100%', marginTop: "64px" }}>
 
-                <VoteRegisterButton />
+                <VoteRegisterButton projectId={projectId} />
 
               
 

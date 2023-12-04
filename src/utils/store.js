@@ -40,10 +40,10 @@ const useFundStore = create((set) => ({
     goalAmount: 0,
     setGoalAmount: (goalAmount) => set({ goalAmount }),
 
-    saleStartTime: '',
+    saleStartTime: {},
     setSaleStartTime: (saleStartTime) => set({ saleStartTime }),
 
-    saleEndTime: '',
+    saleEndTime: {},
     setSaleEndTime: (saleEndTime) => set({ saleEndTime }),
 
     milestoneNum: 2,
@@ -66,6 +66,18 @@ const useFundStore = create((set) => ({
 
     fundContract: '',
     setFundContract: (fundContract) => set({fundContract}),
+
+    voteTitle: '',
+    setVoteTitle: (voteTitle) => set({voteTitle}),
+
+    voteContent: '',
+    setVoteContent: (voteContent) => set({voteContent}),
+
+    voteEndDate: {},
+    setVoteEndDate: (voteEndDate) => set({voteEndDate}),
+
+    voteNum: 0,
+    setVoteNum: (voteNum) => set({voteNum}),
 }));
 
 // Component to initialize the store
@@ -89,6 +101,10 @@ export const FundStoreInitializer = () => {
     const setWebsite = useFundStore((state) => state.setWebsite);
     const setVideoURL = useFundStore((state) => state.setVideoURL);
     const setFundContract = useFundStore((state) => state.setFundContract);
+    const setVoteTitle = useFundStore((state) => state.setVoteTitle);
+    const setVoteContent = useFundStore((state) => state.setVoteContent);
+    const setVoteEndDate = useFundStore((state) => state.setVoteEndDate);
+    const setVoteNum = useFundStore((state) => state.setVoteNum);
 
 
     useEffect(() => {
@@ -111,6 +127,10 @@ export const FundStoreInitializer = () => {
         setOptions(JSON.parse(localStorage.getItem("options")) ?? []);
         setVideoURL(localStorage.getItem("videoURL") ?? '');
         setFundContract(localStorage.getItem("fundContract") ?? '');
+        setVoteTitle(localStorage.getItem("voteTitle") ?? '');
+        setVoteContent(localStorage.getItem("voteContent") ?? '');
+        setVoteEndDate(localStorage.getItem("voteEndDate") ?? '');
+        setVoteNum(localStorage.getItem("voteNum") ?? 0);
     }, []);
 
     return null;

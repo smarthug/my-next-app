@@ -1,6 +1,6 @@
 {
-    "fundManagerAddress":"0x98Fa8C596982F0926ee872dB88dC0659be37f0fb",
-    "fundAddressImpl": "0xDdBbD7b51EFe55E3A73a845226B61D7E94Dcde45",
+    "fundManagerAddress":"0xE6D9D514eF6Abc2D539457Ee2778b93433c08877",
+    "fundAddressImpl": "0xe424f407E0114f86E5E2767b395Fc8d2052793F0",
     "fundManagerABI":[
         {
             "inputs": [],
@@ -197,31 +197,6 @@
                     "internalType": "string",
                     "name": "symbol",
                     "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_baseURL",
-                    "type": "string"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "_milestoneNum",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "_saleEndTime",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256[]",
-                    "name": "_fundRatio",
-                    "type": "uint256[]"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_feeGetter",
-                    "type": "address"
                 }
             ],
             "stateMutability": "nonpayable",
@@ -577,6 +552,11 @@
                 },
                 {
                     "internalType": "uint256",
+                    "name": "_saleStartTime",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
                     "name": "_saleEndTime",
                     "type": "uint256"
                 },
@@ -599,16 +579,6 @@
                     "internalType": "uint256[]",
                     "name": "_fundRatio",
                     "type": "uint256[]"
-                },
-                {
-                    "internalType": "address",
-                    "name": "_feeGetter",
-                    "type": "address"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_fundContent",
-                    "type": "string"
                 }
             ],
             "name": "setInitialValue",
@@ -812,19 +782,6 @@
             "type": "function"
         },
         {
-            "inputs": [],
-            "name": "fundContent",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
             "inputs": [
                 {
                     "internalType": "uint256",
@@ -876,11 +833,6 @@
                     "internalType": "uint256[5]",
                     "name": "",
                     "type": "uint256[5]"
-                },
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
                 }
             ],
             "stateMutability": "view",

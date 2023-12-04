@@ -8,6 +8,7 @@ import useFundStore, { FundStoreInitializer } from '../utils/store';
 import { AES, enc } from 'crypto-js';
 import { useLayoutEffect } from 'react';
 import db from '../utils/firebase.js';
+import dayjs from 'dayjs';
 
 const keyForAES = "thisiskey";
 // FundStoreInitializer()
@@ -100,6 +101,7 @@ export default function DeployButton() {
         const {title, subTitle, category1, category2,fundContent, teamContent, milestoneDesc, imageURL, videoURL, policy, website, wallet,goalAmount, options,fundRatio,saleStartTime,saleEndTime,milestoneNum } = useFundStore.getState()
         console.log(saleEndTime);
         console.log(saleStartTime);
+        console.log(dayjs(saleEndTime));
         const account = window.ethereum.selectedAddress;
         const managerContract = await new web3.eth.Contract(fundManagerABI,fundManagerAddress) ;
         
@@ -139,8 +141,8 @@ export default function DeployButton() {
         console.log(website)
         console.log(wallet)
         console.log("goalAmount", goalAmount)
-        console.log("saleStartTime", saleStartTime.unix())
-        console.log("saleEndTime", saleEndTime.unix())
+        console.log("saleStartTime", dayjs(saleStartTime).unix())
+        console.log("saleEndTime", dayjs(saleEndTime).unix())
         console.log("milestoneNum", milestoneNum)
         console.log("fundRatio", fundRatio)
         console.log("milestoneDesc", milestoneDesc)
@@ -154,28 +156,16 @@ export default function DeployButton() {
         }
         let fundURL;
         let contentForUpload;
-        let tempMilestone = new Array();
-        let tempOption = new Array();
-        let tempRatioTotal = parseInt(fundRatio[0]);
-        let tempRatio = new Array();
-        tempRatio.push(Number(fundRatio[0]));
-        console.log(tempRatio);
-        for(let i = 0;i<milestoneDesc.length;i++){
-          tempRatioTotal += parseInt(fundRatio[i]);
-          tempRatio.push(Number(fundRatio[i]));
-            tempMilestone.push({
-                "Description": milestoneDesc[i],
-                // "Date": milestoneDate[i].unix(),
-                "Ratio": fundRatio[i]
-            })
-        }
-        
-        for(let i = 0;i<options.length;i++){
-            tempOption.push({
-                "Description": options[i].optionTitle,
-                "Price": prices[i]
-            })
-        }
+        const tempMilestoneDesc = milestoneDesc.map((obj)=> {return Object.assign({}, obj)});
+        const tempRatio = fundRatio.map((obj)=> {return Object.assign({}, obj)});
+        // const tempOptionDesc = option.map((obj)=> {return Object.assign({}, obj.optionTitle)});
+        // for(let i = 0;i<options.length;i++){
+        //     tempOption.push({
+        //         "Description": options[i].optionTitle,
+        //         "Price": prices[i]
+        //     })
+        // }
+        // console.log(tempOption);
 
         
         if (title.length > 0 && fundContent.length > 0) {
@@ -188,26 +178,27 @@ export default function DeployButton() {
                 Title: title,
                 Description: fundContent,
                 TeamDescription: teamContent,
-                Milestone: tempMilestone,
-                FundOption: tempOption,
-                FundStart:saleStartTime.unix(),
-                FundEnd:saleEndTime.unix(),
+                MilestoneDesc: milestoneDesc,
+                MilestoneRatio: fundRatio,
+                FundOption: options,
+                FundStart:dayjs(saleStartTime).unix(),
+                FundEnd:dayjs(saleEndTime).unix(),
                 FundGoal:goalAmount,
                 ImageURL:imageURL,
                 VideoURL:videoURL,
                 Policy:policy,
                 // SearchTag:searchTag,
                 Website:website,
-                Wallet:wallet
+                Wallet:account
             }
             const fundURI = await ipfsUploadMetadata(contentForUpload);
             fundURL = `https://${fundURI}.ipfs.nftstorage.link`;
             
         }
 
-        const encryptURL = await encrypt(fundURL.toString(), keyForAES);
         console.log(fundURL);
         let contract = await new web3.eth.Contract(fundABI,fundContract) ;
+        console.log(contentForUpload);
 
         
         // string memory name_,
@@ -227,24 +218,29 @@ export default function DeployButton() {
         ret = await web3.eth.sendTransaction({
           from: account,
           to: fundContract,
-          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,saleEndTime.unix().toString(),prices,optionNum,goalAmount,fundRatio,account,encryptURL).encodeABI(),
+          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,dayjs(saleStartTime).unix(),dayjs(saleEndTime).unix().toString(),prices,optionNum,goalAmount,fundRatio,account).encodeABI(),
           gas: '2000000'            
           })
           .then(async function(receipt){
             console.log(receipt);
-            var DB = await db.collection('Projects');
-            var temp = await DB.doc(account).set(contentForUpload);
+            var DBProject = await db.collection('Projects');
+            var temp = await DBProject.doc(fundContract).set(contentForUpload);
+            var DBCreator = await db.collection('Creator');
+            var tempCreatorList = new Array();
+            
+            var tempCreatorData = await DBCreator.doc(account).get().then(async function(data) {    
+                console.log(data.data());
+                if(data.data() != undefined){
+                    tempCreatorList = data.data().projectContract;
+                }
+            });
+            tempCreatorList.push(fundContract);
+            temp = await DBCreator.doc(account).set({
+                projectContract : tempCreatorList
+            }, { merge: true })
             console.log("Set Init Value success");
           });
     }
-    
-    const encrypt = (content, password) => AES.encrypt(JSON.stringify({ content }), password).toString()
-    const decrypt = (crypted, password) => JSON.parse(AES.decrypt(crypted, password).toString(enc.Utf8)).content
-
-
-
-
-
     return (
         <Box
             sx={{

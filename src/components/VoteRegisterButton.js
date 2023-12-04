@@ -1,6 +1,7 @@
 import { Box, Button, Typography, TextareaAutosize, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Web3 from "web3";
 import { useNetwork, useSigner } from "wagmi";
+import { getAccount } from '@wagmi/core'
 import { ethers } from "ethers";
 import { ipfsUploadImage, ipfsUploadMetadata } from '../utils/ipfsUpload';
 import Contract from "../utils/Contract.json";
@@ -10,7 +11,7 @@ import { useLayoutEffect } from 'react';
 import db from '../utils/firebase.js';
 import ProjectInputRow from './ProjectInputRow.js';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -22,6 +23,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 
 
@@ -40,9 +42,8 @@ const StyledFormControl = styled(FormControl)`
   min-width: 120px;
 `;
 
-const keyForAES = "thisiskey";
 // FundStoreInitializer()
-export default function DeployButton() {
+export default function DeployButton(props) {
 
     // const website = useFundStore(state => state.website);
     // const setWebsite = useFundStore(state => state.setWebsite);
@@ -50,22 +51,54 @@ export default function DeployButton() {
     // const handleVideoURLChange = (event) => {
     //     setWebsite(event.target.value);
     // };
+    const voteTitle = useFundStore(state => state.voteTitle);
+    const setVoteTitle = useFundStore(state => state.setVoteTitle);
 
-    const [voteTitle, setVoteTitle] = useState("")
 
     const handleVoteTitleChange = (event) => {
         setVoteTitle(event.target.value);
     }
 
-    const [voteContent, setVoteContent] = useState("")
+    const voteContent = useFundStore(state => state.voteContent);
+    const setVoteContent = useFundStore(state => state.setVoteContent);
     const handleVoteContentChange = (event) => {
         setVoteContent(event.target.value);
     }
 
-    const [voteEndDate, setVoteEndDate] = useState("")
+    const voteEndDate = useFundStore(state => state.voteEndDate);
+    const setVoteEndDate = useFundStore(state => state.setVoteEndDate);
 
     const handleVoteEndDateChange = (event) => {
+        console.log(event);
         setVoteEndDate(event);
+    }
+
+    const [milestone, setMilestone] = useState([]);
+    const voteNum = useFundStore(state => state.voteNum);
+    const setVoteNum = useFundStore(state => state.setVoteNum);
+    const fundContract = props.projectId;
+
+    
+    useEffect(() => {
+        var temp = db.collection('Projects').doc(props.projectId).get().then(async function(data) {    
+            // console.log(data.data().MilestoneRatio);
+            let tempMilestone = new Array();
+            for(let i = 1; i<data.data().MilestoneRatio.length;i++){
+                tempMilestone.push({
+                    id: i,
+                    voteNum: i,
+                    voteContent: data.data().MilestoneDesc[i],
+                    voteRatio: data.data().MilestoneRatio[i]
+                })
+            }
+            setMilestone(tempMilestone);
+        });
+    });
+
+    const handlevoteNumChange = async (e) => {
+        console.log(e.target.value);
+        setVoteContent(milestone[e.target.value].voteContent);
+        setVoteNum(e.target.value+1);
     }
 
 
@@ -73,206 +106,69 @@ export default function DeployButton() {
 
     // 여기다가 만들기 , 필요할 것들
     // const goalAmount = useFundStore(state => state.goalAmount)
-
+    const account = getAccount().address;
     web3 = new Web3(window.ethereum);
-    const setFundContract = useFundStore(state => state.setFundContract);
     // const { chain } = useNetwork()
     // // const { data: signer, isError, isLoading } = useSigner();
     // const signer = useSigner();
 
     const fundABI = Contract.fundABI;
-    const fundManagerAddress = Contract.fundManagerAddress;
-    const fundManagerABI = Contract.fundManagerABI;
 
     function tempSave() {
         console.log("임시 저장")
-
-
-
-        console.log(voteTitle);
-        console.log(voteContent);
-        console.log(voteEndDate);
-
+        const {voteTitle, voteContent, voteEndDate, voteNum} = useFundStore.getState();
+        
+        localStorage.setItem('voteTitle', voteTitle)
+        localStorage.setItem('voteContent', voteContent)
+        localStorage.setItem('voteEndDate', dayjs(voteEndDate))
+        localStorage.setItem('voteNum', voteNum)
         // console.log('saleEndTime', saleEndTime.getTime())
     }
-
-    async function deployProject() {
-        console.log("제출")
-
-        // zustand 에 있던것들로 , set Initial value 호출하기 
-
-        // uint256 _goalAmount,
-        // uint _saleEndTime,
-
-        // uint256 _milestoneNum,
-        // uint256[] memory _fundRatio,
-
-        // uint256 _optionNum,
-        // uint256[] memory _prices,
-
-        // Getting non-reactive fresh state
-
-        //Deploy Contract
-        // const managerContract = await new ethers.Contract(fundManagerAddress,fundManagerABI, signer) ;
-
-        // console.log("contract deploy")
-
-        // const contractWithSigner = managerContract.connect(signer)
-        // console.log(signer);
-
-        // const tx = await contractWithSigner.deployNFTFund(title,)
-        // const rc = await tx.wait()
-
-        // console.log(tx);
-        // console.log(rc);
-        const { title, subTitle, category1, category2, fundContent, teamContent, milestoneDesc, imageURL, videoURL, policy, website, wallet, goalAmount, options, fundRatio, saleStartTime, saleEndTime, milestoneNum } = useFundStore.getState()
-        console.log(saleEndTime);
-        console.log(saleStartTime);
-        const account = window.ethereum.selectedAddress;
-        const managerContract = await new web3.eth.Contract(fundManagerABI, fundManagerAddress);
-
-        let ret = await web3.eth.sendTransaction({
-            from: account,
-            to: fundManagerAddress,
-            data: managerContract.methods.deployNFTFund(title, account).encodeABI(),
-            gas: '1000000'
-        })
-            .then(function (receipt) {
-
-                console.log("Deploy success")
-                console.log(receipt.logs[0].address);
-                setFundContract(receipt.logs[0].address);
-
-            });
-        const fundContract = useFundStore.getState().fundContract;
-        console.log(useFundStore.getState())
-
-        const optionNum = options.length
-        const prices = options.map(option => option.price)
-        // console.log(prices)
-
-        const sumOfFund = useFundStore.getState().fundRatio.reduce((a, b) => a + Number(b), 0)
-        // console.log(sumOfFund)
-
-        console.log(title);
-        console.log(subTitle);
-        console.log(category1)
-        console.log(category2)
-        console.log(fundContent)
-        console.log(teamContent)
-        console.log(milestoneDesc)
-        console.log(imageURL)
-        console.log(videoURL)
-        console.log(policy)
-        console.log(website)
-        console.log(wallet)
-        console.log("goalAmount", goalAmount)
-        console.log("saleStartTime", saleStartTime.unix())
-        console.log("saleEndTime", saleEndTime.unix())
-        console.log("milestoneNum", milestoneNum)
-        console.log("fundRatio", fundRatio)
-        console.log("milestoneDesc", milestoneDesc)
-        console.log("optionNum", optionNum)
-        console.log("options", options)
-        console.log("prices", prices)
-
-        if (sumOfFund !== 100) {
-            alert("펀딩 비율의 합이 100이 아닙니다.")
-            return
-        }
-        let fundURL;
+    
+    const buildVote = async() => {
+        console.log(web3);
+        const contract = await new web3.eth.Contract(fundABI,fundContract) ;
+        let voteURL;
         let contentForUpload;
-        let tempMilestone = new Array();
-        let tempOption = new Array();
-        let tempRatioTotal = parseInt(fundRatio[0]);
-        let tempRatio = new Array();
-        tempRatio.push(Number(fundRatio[0]));
-        console.log(tempRatio);
-        for (let i = 0; i < milestoneDesc.length; i++) {
-            tempRatioTotal += parseInt(fundRatio[i]);
-            tempRatio.push(Number(fundRatio[i]));
-            tempMilestone.push({
-                "Description": milestoneDesc[i],
-                // "Date": milestoneDate[i].unix(),
-                "Ratio": fundRatio[i]
-            })
-        }
-
-        for (let i = 0; i < options.length; i++) {
-            tempOption.push({
-                "Description": options[i].optionTitle,
-                "Price": prices[i]
-            })
-        }
-
-
-        if (title.length > 0 && fundContent.length > 0) {
+        if (voteTitle.length > 0 && voteContent.length > 0) {
             contentForUpload = {
-                name: title,
-                image: imageURL,
-                description: fundContent,
-                Category1: category1,
-                Category2: category2,
-                Title: title,
-                Description: fundContent,
-                TeamDescription: teamContent,
-                Milestone: tempMilestone,
-                FundOption: tempOption,
-                FundStart: saleStartTime.unix(),
-                FundEnd: saleEndTime.unix(),
-                FundGoal: goalAmount,
-                ImageURL: imageURL,
-                VideoURL: videoURL,
-                Policy: policy,
-                // SearchTag:searchTag,
-                Website: website,
-                Wallet: wallet
+                VoteTitle: voteTitle,
+                VoteContent: voteContent,
+                VoteEndDate: dayjs(voteEndDate).unix()
             }
-            const fundURI = await ipfsUploadMetadata(contentForUpload);
-            fundURL = `https://${fundURI}.ipfs.nftstorage.link`;
-
+            const voteURI = await ipfsUploadMetadata(contentForUpload);
+            voteURL = `https://${voteURI}.ipfs.nftstorage.link`;
         }
-
-        const encryptURL = await encrypt(fundURL.toString(), keyForAES);
-        console.log(fundURL);
-        let contract = await new web3.eth.Contract(fundABI, fundContract);
-
-
-        // string memory name_,
-        // string memory symbol_,
-        // string memory _baseURL,
-        // uint256 _milestoneNum,
-        // uint256 _saleEndBlock,
-        // uint256[] memory _prices,
-        // uint256 _optionNum,
-        // uint256 _goalAmount,
-        // uint256[] memory _fundRatio,
-        // address _feeGetter,
-        // string memory _fundContent
-        const goalBlock = parseInt(await web3.eth.getBlockNumber(), 10) + 100;
-        console.log(parseInt(goalBlock));
-
-        ret = await web3.eth.sendTransaction({
-            from: account,
-            to: fundContract,
-            data: contract.methods.setInitialValue(title, "FUND", fundURL, milestoneNum, saleEndTime.unix().toString(), prices, optionNum, goalAmount, fundRatio, account, encryptURL).encodeABI(),
-            gas: '2000000'
+        console.log(account);
+        console.log(fundContract);
+        console.log(dayjs(voteEndDate).unix());
+        console.log(voteURL);
+        console.log(voteNum);
+        
+        let ret = await web3.eth.sendTransaction({
+        from: account,
+        to: fundContract,
+        data: contract.methods.buildVote(dayjs(voteEndDate).unix(),voteURL,voteNum).encodeABI(),//fundAddress, endBLock, option number, contentURL
+        gas: '1000000'            
         })
-            .then(async function (receipt) {
-                console.log(receipt);
-                var DB = await db.collection('Projects');
-                var temp = await DB.doc(account).set(contentForUpload);
-                console.log("Set Init Value success");
-            });
+        .then(async function(receipt){
+          console.log(receipt);
+          var DB = await db.collection('Projects');
+          let tempVoteList = new Array();
+          var tempVoteData = await DB.doc(fundContract).get().then(async function(data) {    
+            console.log(data.data());
+            if(data.data() != undefined){
+                tempVoteList = data.data().Votes;
+                tempVoteList.push(contentForUpload);
+            }
+          });
+          
+          var temp = await DB.doc(fundContract).set({
+            Votes:tempVoteList
+          }, { merge: true });
+          console.log("Set Vote Data success");
+        });
     }
-
-    const encrypt = (content, password) => AES.encrypt(JSON.stringify({ content }), password).toString()
-    const decrypt = (crypted, password) => JSON.parse(AES.decrypt(crypted, password).toString(enc.Utf8)).content
-
-
-
-
-
     return (
 
 
@@ -314,7 +210,7 @@ export default function DeployButton() {
                     <Button sx={{
                         marginRight: '20px',
                     }} size='large' variant='outlined' onClick={tempSave} >임시 저장</Button>
-                    <Button size='large' variant='contained' onClick={deployProject} >투표 시작</Button>
+                    <Button size='large' variant='contained' onClick={buildVote} >투표 시작</Button>
 
                 </Box>
 
@@ -327,7 +223,7 @@ export default function DeployButton() {
             </Box>
 
             <Box sx={{ p: 3 }} >
-                {/* <VoteRegisterRoadMap milestoneNum={5} /> */}
+                {/* <VoteRegisterRoadMap voteNum={5} /> */}
 
                 <ProjectInputRow label="현재 마일스톤" description="투표가 진행될 마일스톤입니다">
 
@@ -338,15 +234,17 @@ export default function DeployButton() {
                         <Select
                             labelId="category-label"
                             id="category-select"
-                            value={1}
-                            onChange={() => { }}
+                            defaultValue={1}
+                            onChange={(e) => handlevoteNumChange(e)}
                             label="순서"
                         >
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={3}>3</MenuItem>
-                            <MenuItem value={4}>4</MenuItem>
-                            <MenuItem value={5}>5</MenuItem>
-                            {/* Add more MenuItem components as needed */}
+                        {
+                            milestone.map((item, index) => {
+                                return (
+                                    <MenuItem key={item.id} value={item.voteNum-1}>{item.voteNum}</MenuItem>
+                                )
+                            })
+                        }
                         </Select>
                     </StyledFormControl>
                 </ProjectInputRow>
@@ -390,7 +288,7 @@ export default function DeployButton() {
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/* <DemoContainer components={['DatePicker']}> */}
-                        <DatePicker label={"투표 기한"} onChange={handleVoteEndDateChange} value={voteEndDate} />
+                        <DatePicker label={"투표 기한"} onChange={handleVoteEndDateChange} value={dayjs(voteEndDate)} />
                         {/* </DemoContainer> */}
                     </LocalizationProvider>
                 </ProjectInputRow>
