@@ -80,24 +80,27 @@ export default function DeployButton(props) {
 
     
     useEffect(() => {
-        var temp = db.collection('Projects').doc(props.projectId).get().then(async function(data) {    
-            // console.log(data.data().MilestoneRatio);
-            let tempMilestone = new Array();
-            for(let i = 1; i<data.data().MilestoneRatio.length;i++){
-                tempMilestone.push({
-                    id: i,
-                    voteNum: i,
-                    voteContent: data.data().MilestoneDesc[i],
-                    voteRatio: data.data().MilestoneRatio[i]
-                })
-            }
-            setMilestone(tempMilestone);
-        });
+        if(milestone.length == 0){
+            var temp = db.collection('Projects').doc(props.projectId).get().then(async function(data) {    
+                console.log(data.data().MilestoneRatio);
+                let tempMilestone = new Array();
+                for(let i = 1; i<data.data().MilestoneRatio.length;i++){
+                    tempMilestone.push({
+                        id: i,
+                        voteNum: i,
+                        voteContent: data.data().MilestoneDesc[i],
+                        voteRatio: data.data().MilestoneRatio[i]
+                    })
+                }
+                setMilestone(tempMilestone);
+            });
+
+        }
     });
 
     const handlevoteNumChange = async (e) => {
         console.log(e.target.value);
-        setVoteContent(milestone[e.target.value].voteContent);
+        setVoteContent(milestone[e.target.value-1].voteContent);
         setVoteNum(e.target.value+1);
     }
 
@@ -157,11 +160,12 @@ export default function DeployButton(props) {
           let tempVoteList = new Array();
           var tempVoteData = await DB.doc(fundContract).get().then(async function(data) {    
             console.log(data.data());
-            if(data.data() != undefined){
+            if(data.data().Votes != undefined){
                 tempVoteList = data.data().Votes;
-                tempVoteList.push(contentForUpload);
             }
           });
+          tempVoteList.push(contentForUpload);
+          console.log(tempVoteList);
           
           var temp = await DB.doc(fundContract).set({
             Votes:tempVoteList
@@ -241,7 +245,7 @@ export default function DeployButton(props) {
                         {
                             milestone.map((item, index) => {
                                 return (
-                                    <MenuItem key={item.id} value={item.voteNum-1}>{item.voteNum}</MenuItem>
+                                    <MenuItem key={item.id} value={item.voteNum}>{item.voteNum}</MenuItem>
                                 )
                             })
                         }
