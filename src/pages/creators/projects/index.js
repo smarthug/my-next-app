@@ -1,25 +1,42 @@
 import { Box, Button, Typography } from "@mui/material";
 import CreatedProjectCard from "@/components/CreatedProjectCard";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getAccount } from '@wagmi/core'
 
-import {db } from '@/utils/firebase.js';
+import db from '@/utils/firebase.js';
 
 export default function Projects() {
+    const account = getAccount().address;
+    const [creatorList, setCreatorList] = useState([]);
 
 
     useEffect(() => {
 
         const fetchData = async () => {
-            // const db = await getFirestore();
-            const data = await db.collection("projects").get();
-            console.log(data.docs.map(doc => doc.data()));
-
-            // console.log(data.docs.map(doc => doc.data().title));
+            let tempCreatorList = new Array();
+            console.log(account);
+            var DBCreator = await db.collection('Creator').doc(account.toLowerCase()).get().then(async function(data) {
+                console.log(data.data())
+                if(data.data() != undefined){
+                    for(let i = 0;i<data.data().projectContract.length;i++){
+                        tempCreatorList.push({
+                            id: i,
+                            address: data.data().projectContract[i]
+                        });
+                    }
+                }
+            });
+            console.log(tempCreatorList);
+            setCreatorList(tempCreatorList);
         }
         fetchData();
 
     }, [])
+
+    useEffect(() => {
+        console.log(creatorList);
+    },[creatorList])
 
 
     return (
@@ -39,9 +56,13 @@ export default function Projects() {
                     },
                 }}
             >
-
-                <CreatedProjectCard />
-                <CreatedProjectCard />
+                {
+                    creatorList.map((item) => {
+                        return(
+                            <CreatedProjectCard key={item.id} projectContract={item.address}/>
+                        )
+                    })
+                }
             </Box>
 
         </div>

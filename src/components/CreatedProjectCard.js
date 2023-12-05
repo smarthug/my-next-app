@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import db from '../utils/firebase.js';
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,20 +39,40 @@ const Button = styled.button`
   }
 `;
 
-const MyComponent = () => (
-  <Wrapper>
-    <ImagePlaceholder>
-      <span>Image</span> {/* Placeholder for the image */}
-    </ImagePlaceholder>
-    <TextSection>
-      <div>제목없음</div>
-      <div>testfewfef</div>
-    </TextSection>
-    <div>
-      <Button>관리</Button>
-      <Button>삭제</Button>
-    </div>
-  </Wrapper>
-);
+export default function MyComponent(props) {
+  const [title, setTitle] = useState('');
+  const [imageURL, setImageURL] = useState('');
+  
 
-export default MyComponent;
+  useEffect(() => {
+
+      const fetchData = async () => {
+          var DB = await db.collection('Projects').doc(props.projectContract.toLowerCase()).get().then(async function(data) {
+              console.log(data.data())
+              if(data.data() != undefined){
+                setTitle(data.data().Title);
+                setImageURL(data.data().ImageURL);
+
+              }
+          });
+      }
+      fetchData();
+
+    }, [])
+
+    return (
+      <Wrapper>
+        <ImagePlaceholder>
+          <span>Image</span> {/* Placeholder for the image */}
+        </ImagePlaceholder>
+        <TextSection>
+          <div>{title}</div>
+          <div>{imageURL}</div>
+        </TextSection>
+        <div>
+          <Button>관리</Button>
+          <Button>삭제</Button>
+        </div>
+      </Wrapper>
+    )
+  }

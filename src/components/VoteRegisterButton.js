@@ -6,7 +6,6 @@ import { ethers } from "ethers";
 import { ipfsUploadImage, ipfsUploadMetadata } from '../utils/ipfsUpload';
 import Contract from "../utils/Contract.json";
 import useFundStore, { FundStoreInitializer } from '../utils/store';
-import { AES, enc } from 'crypto-js';
 import { useLayoutEffect } from 'react';
 import db from '../utils/firebase.js';
 import ProjectInputRow from './ProjectInputRow.js';

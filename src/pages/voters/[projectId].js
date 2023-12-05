@@ -6,12 +6,16 @@ import Link from "next/link";
 
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const VoteStepper = dynamic(() => import('@/components/VoteStepper'), {
   ssr: false
 })
 
 export default function Projects() {
+    const {
+        query: { projectId }
+    } = useRouter();
 
   
 
@@ -24,7 +28,7 @@ export default function Projects() {
             </Typography>
 
          
-            <VoteStepper />
+            <VoteStepper projectId={projectId} />
         </div>
     )
 }
