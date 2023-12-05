@@ -1,8 +1,23 @@
 import { Box, Button, Typography } from "@mui/material";
 import CreatedProjectCard from "@/components/CreatedProjectCard";
 import Link from "next/link";
+import { useEffect } from "react";
+
+import {db } from '@/utils/firebase.js';
 
 export default function Projects() {
+
+
+    useEffect(() => {
+
+        // const fetchData = async () => {
+        //     // const db = await getFirestore();
+        //     const data = await db.collection("projects").get();
+        //     console.log(data.docs.map(doc => doc.data()));
+        // }
+        // fetchData();
+
+    }, [])
 
 
     return (
