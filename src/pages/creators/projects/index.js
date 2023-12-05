@@ -10,12 +10,14 @@ export default function Projects() {
 
     useEffect(() => {
 
-        // const fetchData = async () => {
-        //     // const db = await getFirestore();
-        //     const data = await db.collection("projects").get();
-        //     console.log(data.docs.map(doc => doc.data()));
-        // }
-        // fetchData();
+        const fetchData = async () => {
+            // const db = await getFirestore();
+            const data = await db.collection("projects").get();
+            console.log(data.docs.map(doc => doc.data()));
+
+            // console.log(data.docs.map(doc => doc.data().title));
+        }
+        fetchData();
 
     }, [])
 
