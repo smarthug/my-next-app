@@ -6,6 +6,9 @@ import { getAccount } from '@wagmi/core'
 
 import db from '@/utils/firebase.js';
 
+const devAddress = "0x4A2E1E006ce13304E3F34fA17f56e552100f75fb"
+// const devAddress = "0x5e60d41871492883cc38ce000e9876f79b188850"
+
 export default function Projects() {
     const account = getAccount().address;
     const [creatorList, setCreatorList] = useState([]);
@@ -16,7 +19,8 @@ export default function Projects() {
         const fetchData = async () => {
             let tempCreatorList = new Array();
             console.log(account);
-            var DBCreator = await db.collection('Creator').doc(account.toLowerCase()).get().then(async function(data) {
+            // var DBCreator = await db.collection('Creator').doc(account.toLowerCase()).get().then(async function(data) {
+                var DBCreator = await db.collection('Creator').doc(devAddress.toLowerCase()).get().then(async function(data) {
                 console.log(data.data())
                 if(data.data() != undefined){
                     for(let i = 0;i<data.data().projectContract.length;i++){

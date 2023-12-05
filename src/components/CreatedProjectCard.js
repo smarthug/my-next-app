@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import db from '../utils/firebase.js';
 
+import Link from "next/link";
+import { Button } from '@mui/material';
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -9,7 +12,6 @@ const Wrapper = styled.div`
   padding: 20px;
   border: 1px solid #ccc; // Assuming a light gray border
   background-color: #fff;
-  width: 1160px; // Adjust width as necessary
 `;
 
 const ImagePlaceholder = styled.div`
@@ -27,17 +29,17 @@ const TextSection = styled.div`
   margin-left: 20px;
 `;
 
-const Button = styled.button`
-  padding: 10px 20px;
-  margin-left: 10px;
-  border: none;
-  background-color: #e0e0e0; // Assuming a light gray background
-  cursor: pointer;
+// const Button = styled.button`
+//   padding: 10px 20px;
+//   margin-left: 10px;
+//   border: none;
+//   background-color: #e0e0e0; // Assuming a light gray background
+//   cursor: pointer;
 
-  &:hover {
-    background-color: #d4d4d4; // Slightly darker on hover
-  }
-`;
+//   &:hover {
+//     background-color: #d4d4d4; // Slightly darker on hover
+//   }
+// `;
 
 export default function MyComponent(props) {
   const [title, setTitle] = useState('');
@@ -63,15 +65,17 @@ export default function MyComponent(props) {
     return (
       <Wrapper>
         <ImagePlaceholder>
-          <span>Image</span> {/* Placeholder for the image */}
+          {/* <span>Image</span> Placeholder for the image */}
+          <img src={imageURL} />
         </ImagePlaceholder>
         <TextSection>
           <div>{title}</div>
           <div>{imageURL}</div>
         </TextSection>
         <div>
-          <Button>관리</Button>
-          <Button>삭제</Button>
+          <Button component={Link} href={`/creators/projects/${props.projectContract}`} variant="contained">투표 등록</Button>
+          {/* <Button>관리</Button> */}
+          {/* <Button>삭제</Button> */}
         </div>
       </Wrapper>
     )
