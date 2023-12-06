@@ -23,6 +23,8 @@ import { IM_Fell_DW_Pica } from 'next/font/google/index.js';
 // fetch vote title from firestore
 // const steps = ['펀딩 성공', '디자인 완성', '시제품 제작', '제품 수정', '공장 수주'];
 
+const tmpFundContract = "0x5e60d41871492883cc38ce000e9876f79b188850"
+
 export default function HorizontalLinearStepper(props) {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
@@ -31,7 +33,7 @@ export default function HorizontalLinearStepper(props) {
     const [voteEndDate, setVoteEndDate] = useState('');
     const [steps, setSteps] = useState(['펀딩 성공', '디자인 완성', '시제품 제작', '제품 수정', '공장 수주']);
     const fundContract = props.projectId;
-    const account  = getAccount().address;
+    const account = getAccount().address;
     web3 = new Web3(window.ethereum);
 
     //   const isStepOptional = (step) => {
@@ -45,23 +47,23 @@ export default function HorizontalLinearStepper(props) {
     const getDBData = async () => {
         var DB = await db.collection('Projects');
         let tempVoteList = new Array();
-        var tempVoteData = await DB.doc(fundContract).get().then(async function(data) {    
-          console.log(data.data());
-          if(data.data().Votes != undefined){
-              tempVoteList = data.data().Votes;
-              setActiveStep(tempVoteList.length);
-              setVoteTitle(tempVoteList[tempVoteList.length-1].VoteTitle);
-              setVoteContent(tempVoteList[tempVoteList.length-1].VoteContent);
-              setVoteEndDate(dayjs(tempVoteList[tempVoteList.length-1].VoteEndDate));
+        var tempVoteData = await DB.doc(fundContract).get().then(async function (data) {
+            console.log(data.data());
+            if (data.data().Votes != undefined) {
+                tempVoteList = data.data().Votes;
+                setActiveStep(tempVoteList.length);
+                setVoteTitle(tempVoteList[tempVoteList.length - 1].VoteTitle);
+                setVoteContent(tempVoteList[tempVoteList.length - 1].VoteContent);
+                setVoteEndDate(dayjs(tempVoteList[tempVoteList.length - 1].VoteEndDate));
 
-              let tempMilestone = new Array();
-              tempMilestone.push('펀딩 성공');
-              for(let i = 0;i<data.data().MilestoneDesc.length;i++){
-                tempMilestone.push(data.data().MilestoneDesc[i]);
-              }
-              tempMilestone.push('프로젝트 완료');
-              setSteps(tempMilestone);
-          }
+                let tempMilestone = new Array();
+                tempMilestone.push('펀딩 성공');
+                for (let i = 0; i < data.data().MilestoneDesc.length; i++) {
+                    tempMilestone.push(data.data().MilestoneDesc[i]);
+                }
+                tempMilestone.push('프로젝트 완료');
+                setSteps(tempMilestone);
+            }
         });
     }
 
@@ -69,7 +71,7 @@ export default function HorizontalLinearStepper(props) {
         return skipped.has(step);
     };
 
-    const handleNext = () => {
+    const handleDisagree = () => {
         // let newSkipped = skipped;
         // if (isStepSkipped(activeStep)) {
         //     newSkipped = new Set(newSkipped.values());
@@ -83,17 +85,17 @@ export default function HorizontalLinearStepper(props) {
 
     const voteDisagree = async () => {
         const fundABI = Contract.fundABI;
-        const contract = await new web3.eth.Contract(fundABI,fundContract) ;
-        
+        const contract = await new web3.eth.Contract(fundABI, fundContract);
+
         let ret = await web3.eth.sendTransaction({
-          from: account,
-          to: fundContract,
-          data: contract.methods.voteDisagree(activeStep).encodeABI(),
-          gas: '1000000'            
-          })
-          .then(function(receipt){
-          console.log("Vote success")
-          });
+            from: account,
+            to: fundContract,
+            data: contract.methods.voteDisagree(activeStep).encodeABI(),
+            gas: '1000000'
+        })
+            .then(function (receipt) {
+                console.log("Vote success")
+            });
 
     }
 
@@ -120,7 +122,7 @@ export default function HorizontalLinearStepper(props) {
         setActiveStep(0);
     };
 
-    
+
     const CssTextField = styled(TextField)({
         '& label.Mui-focused': {
             color: 'red',
@@ -175,60 +177,60 @@ export default function HorizontalLinearStepper(props) {
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}
-                        현재 투표 단계
+                    <Typography sx={{ mt: 2, mb: 1 }}>
+
                     </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                        
-                <ProjectInputRow label="투표 제목" >
+                    <Box sx={{ display: 'flex', flexDirection: 'column', pt: 2 }}>
 
-                <CssTextField
-                    label="Vote Title"
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
+                        <ProjectInputRow label="투표 제목" >
 
-                    margin="normal"
-                    value={voteTitle}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">{`${voteTitle.length}/50`}</InputAdornment>,
-                    }}
-                />
-                </ProjectInputRow>
+                            <CssTextField
+                                label="Vote Title"
+                                variant="outlined"
+                                color="secondary"
+                                fullWidth
 
-                <ProjectInputRow label="투표 설명">
+                                margin="normal"
+                                value={voteTitle}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">{`${voteTitle.length}/50`}</InputAdornment>,
+                                }}
+                            />
+                        </ProjectInputRow>
 
-                <CssTextField
-                    label="투표 설명"
-                    variant="outlined"
-                    color="secondary"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    margin="normal"
-                    value={voteContent}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">{`${voteContent.length}/300`}</InputAdornment>,
-                    }}
-                />
-                </ProjectInputRow>
+                        <ProjectInputRow label="투표 설명">
 
-                <ProjectInputRow label="투표 기한">
+                            <CssTextField
+                                label="투표 설명"
+                                variant="outlined"
+                                color="secondary"
+                                fullWidth
+                                multiline
+                                rows={4}
+                                margin="normal"
+                                value={voteContent}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">{`${voteContent.length}/300`}</InputAdornment>,
+                                }}
+                            />
+                        </ProjectInputRow>
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    {/* <DemoContainer components={['DatePicker']}> */}
-                    <DatePicker label={"투표 기한"} value={dayjs(voteEndDate)} />
-                    {/* </DemoContainer> */}
-                </LocalizationProvider>
-                </ProjectInputRow>
-                        <Button
+                        <ProjectInputRow label="투표 기한">
+
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                {/* <DemoContainer components={['DatePicker']}> */}
+                                <DatePicker label={"투표 기한"} value={dayjs(voteEndDate)} />
+                                {/* </DemoContainer> */}
+                            </LocalizationProvider>
+                        </ProjectInputRow>
+                        {/* <Button
                             color="inherit"
                             disabled={activeStep === 0}
                             onClick={handleBack}
                             sx={{ mr: 1 }}
                         >
                             Back
-                        </Button>
+                        </Button> */}
                         <Box sx={{ flex: '1 1 auto' }} />
                         {/* {isStepOptional(activeStep) && (
                             <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
@@ -236,9 +238,27 @@ export default function HorizontalLinearStepper(props) {
                             </Button>
                         )} */}
 
-                        <Button onClick={handleNext}>
-                            {activeStep === steps.length - 1 ? 'Finish' : 'Disagree'}
-                        </Button>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                pt: 2,
+                                gap: 2
+                            }}
+                        >
+
+                            <Button variant='contained' fullWidth onClick={handleDisagree}>
+                                {/* {activeStep === steps.length - 1 ? 'Finish' : 'Disagree'} */}
+                                Disagree
+                            </Button>
+
+                            <Button variant='contained' fullWidth onClick={handleDisagree}>
+                                {/* {activeStep === steps.length - 1 ? 'Finish' : 'Disagree'} */}
+                                Refund
+                            </Button>
+
+                        </Box>
+
                     </Box>
                 </React.Fragment>
             )}
