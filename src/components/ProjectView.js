@@ -138,7 +138,7 @@ export default function ColumnsGrid(props) {
                         variant="outlined"
                         clickable
                     /> */}
-                    <Box
+                    {/* <Box
                         display="flex"
                         // justifyContent="center"
                         alignItems="center"
@@ -168,7 +168,7 @@ export default function ColumnsGrid(props) {
                             href="#basic-chip"
                             variant="outlined"
                             clickable />
-                    </Box>
+                    </Box> */}
 
                     프로젝트 계획
 
@@ -194,7 +194,7 @@ export default function ColumnsGrid(props) {
                     </Grid>
                     <Grid xs={12} lg={4}>
                         {/* <MockProjectDetail /> */}
-                        <CustomCard />
+                        <TeamDescription  teamDescription={fetchedData.TeamDescription} />
 
                         <Typography variant="h5" m={4}>
                             선물 선택
@@ -205,7 +205,7 @@ export default function ColumnsGrid(props) {
                             {fetchedData.FundOption.map((item) => {
 
                                 return (
-                                    <ProductCard optionTitle={item.optionTitle} price={item.price} />
+                                    <OptionsCard optionTitle={item.optionTitle} price={item.price} />
                                 )
                             }
                             )}
@@ -266,7 +266,7 @@ function InfoCard() {
     );
 }
 
-function CustomCard() {
+function TeamDescription({teamDescription}) {
     return (
         <Card variant="outlined">
             <CardContent>
@@ -274,7 +274,7 @@ function CustomCard() {
                     창작자 소개
                 </Typography>
 
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
                     <Avatar alt="Yapmom Games" src="/path/to/image.jpg" />
                     <Typography variant="body1" style={{ marginLeft: '16px' }}>
                         yapmom games
@@ -282,10 +282,10 @@ function CustomCard() {
                     <Typography variant="body2" style={{ marginLeft: '16px', color: 'gray' }}>
                         마지막 로그인 1일 전
                     </Typography>
-                </div>
+                </div> */}
 
                 <Typography variant="body1" gutterBottom>
-                    많은 분들이 부담없는 가격으로 재미있게 즐길 수 있는 게임을 만드는 것이 목표이기 때문에 자주 방문해주세요. 잘 부탁드립니다.
+                    {teamDescription}
                 </Typography>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
@@ -302,7 +302,7 @@ function CustomCard() {
 }
 
 
-function ProductCard({optionTitle, price}) {
+function OptionsCard({optionTitle, price}) {
     return (
         <Box m={1}>
 
