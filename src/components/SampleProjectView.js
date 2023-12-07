@@ -55,8 +55,6 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function ColumnsGrid(props) {
     const fundContract = props.projectId;
 
-    const [fetchedData, setFetchedData] = useState(null);
-
     
 
     const [value, setValue] = useState(0);
@@ -75,7 +73,6 @@ export default function ColumnsGrid(props) {
         let tempVoteList = new Array();
         var tempVoteData = await DB.doc(fundContract).get().then(async function (data) {
             console.log(data.data());
-            setFetchedData(data.data());
             // if (data.data().Votes != undefined) {
             //     tempVoteList = data.data().Votes;
             //     setActiveStep(tempVoteList.length);
@@ -94,13 +91,7 @@ export default function ColumnsGrid(props) {
         });
     }
 
-    if(fetchedData == null){
-        return(
-            <div>
-                Loading...
-            </div>
-        )
-    }
+
 
     return (
         <Container maxWidth="lg">
@@ -202,16 +193,16 @@ export default function ColumnsGrid(props) {
 
                         <Box>
 
-                            {fetchedData.FundOption.map((item) => {
 
-                                return (
-                                    <ProductCard optionTitle={item.optionTitle} price={item.price} />
-                                )
-                            }
-                            )}
+                            <ProductCard />
 
 
-                          
+
+                            <ProductCard />
+                            <ProductCard />
+                            <ProductCard />
+                            <ProductCard />
+                            <ProductCard />
                         </Box>
                     </Grid>
                 </Grid>
@@ -302,7 +293,7 @@ function CustomCard() {
 }
 
 
-function ProductCard({optionTitle, price}) {
+function ProductCard() {
     return (
         <Box m={1}>
 
@@ -310,20 +301,42 @@ function ProductCard({optionTitle, price}) {
                 <CardContent>
                     <Typography variant="body1" gutterBottom>
                         <Chip
-                            label="0명이 선택"
+                            label="538명이 선택"
                             variant="outlined"
                             color="primary"
                             size="small"
                             style={{ marginRight: '8px' }}
                         />
-                        {price} eth +
+                        21,000원 +
                     </Typography>
 
                     <Typography variant="h6" gutterBottom>
-                        <b>{optionTitle}</b>
+                        <b>매번새로 리턴 세트</b>
                     </Typography>
 
-                   
+                    <Typography variant="body1">
+                        • CD (x 1)
+                    </Typography>
+
+                    <Typography variant="body1">
+                        • 필름마크 1종 (x 2)
+                    </Typography>
+
+                    <Typography variant="body1">
+                        • 아이가치 화보콘트 플로피 2종 (x 1)
+                    </Typography>
+
+                    <Typography variant="body1">
+                        • [주간] 아이가치 화보콘트 플로피 3종 (x 1)
+                    </Typography>
+
+                    <Typography variant="body1">
+                        • [주간] 스틸펜치 TRY 상영전 사인엽서 (x 1)
+                    </Typography>
+
+                    <Typography variant="body1">
+                        • [주간] 신규 캐릭터 알람 메시지 톤 8종 (x 1)
+                    </Typography>
                 </CardContent>
             </Card>
         </Box>
