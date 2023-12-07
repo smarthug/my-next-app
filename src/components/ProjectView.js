@@ -25,6 +25,8 @@ import YouTube from 'react-youtube';
 
 import ProjectViewStepper from '@/components/ProjectViewStepper';
 
+import ProjectViewPaper from '@/components/ProjectViewPaper';
+
 // import { styled } from '@mui/material/styles';
 // import Box from '@mui/material/Box';
 
@@ -132,6 +134,19 @@ export default function ColumnsGrid(props) {
 
     return (
         <Container maxWidth="lg">
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: 'background.paper',
+                    // minHeight: '100vh',
+                }}
+            >
+                <Typography variant="h4" component="div" gutterBottom>
+                    {fetchedData.Title}
+                </Typography>
+            </Box>
 
 
             <Box sx={{ flexGrow: 1 }}>
@@ -155,7 +170,7 @@ export default function ColumnsGrid(props) {
                         
                     </Grid>
                     <Grid xs={12} lg={4}>
-                        <InfoCard />
+                        <ProjectViewPaper fundGoal={fetchedData.FundGoal} fundStart={fetchedData.FundStart} fundEnd={fetchedData.FundEnd} options={fetchedData.FundOption} />
                     </Grid>
                 </Grid>
             </Box>
@@ -172,45 +187,7 @@ export default function ColumnsGrid(props) {
                 </Box>
                 <CustomTabPanel value={value} index={0}>
 
-                    {/* <Chip label="Clickable Link" component="a" href="#basic-chip" clickable />
-                    <Chip
-                        label="Clickable Link"
-                        component="a"
-                        href="#basic-chip"
-                        variant="outlined"
-                        clickable
-                    /> */}
-                    {/* <Box
-                        display="flex"
-                        // justifyContent="center"
-                        alignItems="center"
-                        gap={2}
-                    >
-                        <Chip label="소개" color="primary" component="a"
-                            href="#basic-chip"
-                            variant="outlined"
-                            clickable />
-                        <Chip label="예산" component="a"
-                            href="#basic-chip"
-                            variant="outlined"
-                            clickable />
-                        <Chip label="일정" component="a"
-                            href="#basic-chip"
-                            variant="outlined"
-                            clickable />
-                        <Chip label="팀 소개" component="a"
-                            href="#basic-chip"
-                            variant="outlined"
-                            clickable />
-                        <Chip label="선물 설명" component="a"
-                            href="#basic-chip"
-                            variant="outlined"
-                            clickable />
-                        <Chip label="신뢰와 안전" component="a"
-                            href="#basic-chip"
-                            variant="outlined"
-                            clickable />
-                    </Box> */}
+                
 
                     <ProjectViewStepper milestoneDesc={fetchedData.MilestoneDesc} milestoneRatio={fetchedData.MilestoneRatio}  />
 
