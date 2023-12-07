@@ -31,20 +31,20 @@ import ProjectViewPaper from '@/components/ProjectViewPaper';
 // import Box from '@mui/material/Box';
 
 const DescriptionBox = styled(Box)({
-  WebkitTextSizeAdjust: '100%',
-  WebkitFontSmoothing: 'antialiased',
-  WebkitBoxDirection: 'normal',
-  fontFamily: "'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Arial, 'NotoSansKR', sans-serif",
-  boxSizing: 'inherit',
-  wordBreak: 'break-all',
-  textDecoration: 'none',
-  WebkitTapHighlightColor: 'rgba(0, 0, 0, 0.1)',
-  overflowX: 'hidden',
-  color: '#3d3d3d',
-  fontSize: '16px',
-  lineHeight: '28px',
-  padding: 0,
-  margin: 0,
+    WebkitTextSizeAdjust: '100%',
+    WebkitFontSmoothing: 'antialiased',
+    WebkitBoxDirection: 'normal',
+    fontFamily: "'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Arial, 'NotoSansKR', sans-serif",
+    boxSizing: 'inherit',
+    wordBreak: 'break-all',
+    textDecoration: 'none',
+    WebkitTapHighlightColor: 'rgba(0, 0, 0, 0.1)',
+    overflowX: 'hidden',
+    color: '#3d3d3d',
+    fontSize: '16px',
+    lineHeight: '28px',
+    padding: 0,
+    margin: 0,
 });
 
 // Usage
@@ -87,7 +87,7 @@ export default function ColumnsGrid(props) {
 
     const [fetchedData, setFetchedData] = useState(null);
 
-    
+
 
     const [value, setValue] = useState(0);
 
@@ -124,8 +124,8 @@ export default function ColumnsGrid(props) {
         });
     }
 
-    if(fetchedData == null){
-        return(
+    if (fetchedData == null) {
+        return (
             <div>
                 Loading...
             </div>
@@ -167,7 +167,7 @@ export default function ColumnsGrid(props) {
                                 }
                             }
                         />
-                        
+
                     </Grid>
                     <Grid xs={12} lg={4}>
                         <ProjectViewPaper fundGoal={fetchedData.FundGoal} fundStart={fetchedData.FundStart} fundEnd={fetchedData.FundEnd} options={fetchedData.FundOption} />
@@ -187,9 +187,9 @@ export default function ColumnsGrid(props) {
                 </Box>
                 <CustomTabPanel value={value} index={0}>
 
-                
 
-                    <ProjectViewStepper milestoneDesc={fetchedData.MilestoneDesc} milestoneRatio={fetchedData.MilestoneRatio}  />
+
+                    <ProjectViewStepper milestoneDesc={fetchedData.MilestoneDesc} milestoneRatio={fetchedData.MilestoneRatio} />
 
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
@@ -208,13 +208,13 @@ export default function ColumnsGrid(props) {
                     <Grid xs={12} lg={8}>
 
                         {/* <Paper sx={{ height: 3000, width: '100%' }} /> */}
-                        <ProjectDescription  description={fetchedData.Description}/>
+                        <ProjectDescription description={fetchedData.Description} />
 
 
                     </Grid>
                     <Grid xs={12} lg={4}>
                         {/* <ProjectDetail /> */}
-                        <TeamDescription  teamDescription={fetchedData.TeamDescription} />
+                        <TeamDescription teamDescription={fetchedData.TeamDescription} />
 
                         <Typography variant="h5" m={4}>
                             선물 선택
@@ -222,16 +222,16 @@ export default function ColumnsGrid(props) {
 
                         <Box>
 
-                            {fetchedData.FundOption.map((item) => {
+                            {fetchedData.FundOption.map((item, index) => {
 
                                 return (
-                                    <OptionsCard optionTitle={item.optionTitle} price={item.price} />
+                                    <OptionsCard key={index} optionTitle={item.optionTitle} price={item.price} />
                                 )
                             }
                             )}
 
 
-                          
+
                         </Box>
                     </Grid>
                 </Grid>
@@ -286,7 +286,7 @@ function InfoCard() {
     );
 }
 
-function TeamDescription({teamDescription}) {
+function TeamDescription({ teamDescription }) {
     return (
         <Card variant="outlined">
             <CardContent>
@@ -322,7 +322,7 @@ function TeamDescription({teamDescription}) {
 }
 
 
-function OptionsCard({optionTitle, price}) {
+function OptionsCard({ optionTitle, price }) {
     return (
         <Box m={1}>
 
@@ -343,7 +343,7 @@ function OptionsCard({optionTitle, price}) {
                         <b>{optionTitle}</b>
                     </Typography>
 
-                   
+
                 </CardContent>
             </Card>
         </Box>
@@ -351,7 +351,7 @@ function OptionsCard({optionTitle, price}) {
 }
 
 
-function ProjectDescription({description}) {
+function ProjectDescription({ description }) {
 
     return (
 

@@ -136,7 +136,7 @@ export default function ProjectViewPaper({ options, fundGoal, fundStart, fundEnd
 
                         {options.map((option, index) => {
                             return (
-                                <MenuItem value={index}>{option.optionTitle} / {option.price}eth</MenuItem>
+                                <MenuItem key={index} value={index}>{option.optionTitle} / {option.price}eth</MenuItem>
                             )
                         }
                         )}
