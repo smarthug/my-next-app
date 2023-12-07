@@ -170,7 +170,7 @@ export default function ColumnsGrid(props) {
 
                     </Grid>
                     <Grid xs={12} lg={4}>
-                        <ProjectViewPaper fundGoal={fetchedData.FundGoal} fundStart={fetchedData.FundStart} fundEnd={fetchedData.FundEnd} options={fetchedData.FundOption} />
+                        <ProjectViewPaper projectId={props.projectId} fundGoal={fetchedData.FundGoal} fundStart={fetchedData.FundStart} fundEnd={fetchedData.FundEnd} options={fetchedData.FundOption} />
                     </Grid>
                 </Grid>
             </Box>

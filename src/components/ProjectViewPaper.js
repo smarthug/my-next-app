@@ -1,11 +1,15 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import Web3 from "web3";
 import Button from '@mui/material/Button';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import { styled } from '@mui/material/styles';
 import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { getAccount } from '@wagmi/core'
+import Contract from "../utils/Contract.json";
+import useFundStore, { FundStoreInitializer } from '../utils/store';
 
 import dayjs from 'dayjs';
 
@@ -37,9 +41,13 @@ const IconContainer = styled('div')({
     },
 });
 
-export default function ProjectViewPaper({ options, fundGoal, fundStart, fundEnd }) {
+export default function ProjectViewPaper({ projectId, options, fundGoal, fundStart, fundEnd }) {
 
     const [selectedOptions, setSelectedOptions] = React.useState('');
+    const fundABI = Contract.fundABI;
+    web3 = new Web3(window.ethereum);
+    const account = getAccount().address;
+
 
     const handleSubcategoryChange = (event) => {
 
@@ -48,9 +56,22 @@ export default function ProjectViewPaper({ options, fundGoal, fundStart, fundEnd
     };
 
 
-    function handleMint() {
+    async function handleMint() {
         console.log(selectedOptions)
         console.log("mint");
+        let contract = await new web3.eth.Contract(fundABI,projectId) ;
+        console.log(options[selectedOptions].price);
+        
+        let ret = await web3.eth.sendTransaction({
+          from: account,
+          to: projectId,
+          data: contract.methods.mintMultiple(account,"1", selectedOptions).encodeABI(),
+          value: options[selectedOptions].price,//price는 web3.utils로 변환해서 넣거나, 컨트랙트에서 수정
+          gas: '1000000'            
+          })
+          .then(function(receipt){
+          console.log("Mint success")
+          });
     }
 
 
