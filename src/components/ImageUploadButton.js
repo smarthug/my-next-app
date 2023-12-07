@@ -12,7 +12,7 @@ const UploadedImage = styled('img')({
 });
 
 function ImageUploadButton() {
-    const [image, setImage] = useState(null);
+    // const [image, setImage] = useState(null);
 
     const imageURL = useFundStore(state => state.imageURL);
     console.log("imageURL", imageURL)
@@ -23,11 +23,12 @@ function ImageUploadButton() {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = (e) => setImage(e.target.result);
+            // reader.onload = (e) => setImage(e.target.result);
             reader.readAsDataURL(file);
 
 
-            const cid = await ipfsUploadImage(files);
+            // const cid = await ipfsUploadImage(files);
+            const cid = await ipfsUploadImage([file]);
             // setImageCID(cid + "/" + files[0].name);
 
             //`https://ipfs.io/ipfs/${imageCID}`
@@ -64,9 +65,9 @@ function ImageUploadButton() {
                 />
             </Button>
             <div>
-                {imageURL && <UploadedImage src={"https://bafkreifkm25ut5e2xrfq4vpkzqfwkyn3pmodyqb5n5w6edl6o4fnrwcxga.ipfs.nftstorage.link/"} alt="Uploaded" />}
+                {imageURL && <UploadedImage src={imageURL} alt="Uploaded" />}
 
-                {image && <UploadedImage src={image} alt="Uploaded" />}
+                {/* {image && <UploadedImage src={image} alt="Uploaded" />} */}
             </div>
         </div>
     );

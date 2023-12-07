@@ -79,8 +79,6 @@ export default function CustomSelect() {
                     {/* Add more MenuItem components as needed */}
                 </Select>
             </StyledFormControl>
-        </Box
-
-        >
+        </Box>
     );
 }
