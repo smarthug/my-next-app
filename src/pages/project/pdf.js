@@ -1,14 +1,15 @@
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router";
 
-// const ProjectView = dynamic(() => import('@/components/ProjectView'), {
-//     ssr: false
-// })
 
-const ProjectView = dynamic(() => import('@/components/ProjectPDF'), {
+
+const ProjectPDF = dynamic(() => import('@/components/ProjectPDF'), {
     ssr: false
 })
 
+// const ProjectPDF = dynamic(() => import('@/components/Sample'), {
+//     ssr: false
+// })
 
 export default function Project() {
 
@@ -19,7 +20,7 @@ export default function Project() {
 
     return (
         <div>
-            <ProjectView projectId={projectId} />
+            <ProjectPDF projectId={projectId} />
         </div>
     )
 }   
