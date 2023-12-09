@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 
 
 
-// const ProjectPDF = dynamic(() => import('@/components/ProjectPDF'), {
-//     ssr: false
-// })
-
-const ProjectPDF = dynamic(() => import('@/components/Sample'), {
+const ProjectPDF = dynamic(() => import('@/components/ProjectPDF'), {
     ssr: false
 })
+
+// const ProjectPDF = dynamic(() => import('@/components/Sample'), {
+//     ssr: false
+// })
 
 export default function Project() {
 
