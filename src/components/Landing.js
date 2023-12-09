@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Card, CardMedia, CardContent, Typography, Chip, styled } from '@mui/material';
 import Link from 'next/link';
 
@@ -25,7 +25,7 @@ const FundingDetails = styled(Typography)({
     marginBottom: 1,
 });
 
-function ProjectComponent() {
+function ProjectComponent(props) {
     // Replace these with actual project details
     const projectDetails = {
         title: 'LEGENDARIUM: Tarot and Playing Cards',
@@ -38,40 +38,39 @@ function ProjectComponent() {
         location: 'Rolleston, NZ',
     };
 
+
     return (
         <Link href="/project/0x5e60d41871492883cc38ce000e9876f79b188850" passHref>
 
-
-            <ProjectCard>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    image={projectDetails.images[0]}
-                    alt={projectDetails.title}
-                />
-                <CardContent>
-                    {/* <ProjectChip label="Project We Love" color="primary" /> */}
-                    <ProjectTitle variant="h5" component="h2">
-                        {projectDetails.title}
-                    </ProjectTitle>
-                    <ProjectDescription variant="body2">
-                        {projectDetails.description}
-                    </ProjectDescription>
-                    <Typography variant="subtitle2">
-                        by {projectDetails.creator}
-                    </Typography>
-                    <FundingDetails variant="body1">
-                        {projectDetails.funding}
-                    </FundingDetails>
-                    <Typography variant="body2">
-                        {projectDetails.percentageFunded} • {projectDetails.daysToGo}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                        {projectDetails.location}
-                    </Typography>
-                </CardContent>
-            </ProjectCard>
-
+                    <ProjectCard>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            image={props.projectDetail.images}
+                            alt={props.projectDetail.title}
+                        />
+                        <CardContent>
+                            {/* <ProjectChip label="Project We Love" color="primary" /> */}
+                            <ProjectTitle variant="h5" component="h2">
+                                {props.projectDetail.title}
+                            </ProjectTitle>
+                            <ProjectDescription variant="body2">
+                                {props.projectDetail.description}
+                            </ProjectDescription>
+                            <Typography variant="subtitle2">
+                                by {props.projectDetail.creator}
+                            </Typography>
+                            <FundingDetails variant="body1">
+                                {props.projectDetail.funding}
+                            </FundingDetails>
+                            <Typography variant="body2">
+                                {props.projectDetail.percentageFunded} • {props.projectDetail.daysToGo}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                {props.projectDetail.location}
+                            </Typography>
+                        </CardContent>
+                    </ProjectCard>
         </Link>
     );
 }
