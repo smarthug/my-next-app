@@ -38,11 +38,11 @@ const FeatureComponent = () => {
                 <ul>
                     <li>
 
-                        Independent & Secure fund : Every single funding will be securely stored in Smart Contract and even funding solicitor cannot access to this funding without permission of investor's DAO.
+                        Independent & Secure fund : Every single funding will be securely stored in Smart Contract and even funding solicitor cannot access to this funding without permission of investor&apos;s DAO.
                     </li>
 
                     <li>
-                        Safe Funds Execution : Funding solicitor gets each part of funding only when they properly finish their each milestone & after DAO's voting. If the voting of DAO fail, the rest of funding will be refunded.
+                        Safe Funds Execution : Funding solicitor gets each part of funding only when they properly finish their each milestone & after DAO&apos;s voting. If the voting of DAO fail, the rest of funding will be refunded.
                     </li>
 
                     <li>
