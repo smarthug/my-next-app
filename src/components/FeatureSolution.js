@@ -45,7 +45,7 @@ const FeatureComponent = () => {
                     <HighlightedText>
                         Independent & Secure Fund :
                     </HighlightedText>
-                    Funds are stored in Smart Contract & Investor's DAO execute all steps of Funds.
+                    Funds are stored in Smart Contract & Investor&apos;s DAO execute all steps of Funds.
                 </div>
 
                 <div>
