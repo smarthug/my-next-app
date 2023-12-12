@@ -35,7 +35,29 @@ const FeatureComponent = () => {
 
             </FeatureTitle>
             <FeatureText>
-                <ul>
+
+
+
+                {/* DAO of CrowdStep can report a scam or fraud and get reward. */}
+
+                <div>
+
+                    <HighlightedText>
+                        Independent & Secure Fund :
+                    </HighlightedText>
+                    Funds are stored in Smart Contract & Investor's DAO execute all steps of Funds.
+                </div>
+
+                <div>
+
+                    <HighlightedText>
+                        Decentralized Fraud Prevention :
+                    </HighlightedText>
+                    DAO of CrowdStep can report a scam or fraud and get reward.
+                </div>
+
+
+                {/* <ul>
                     <li>
 
                         Independent & Secure fund : Every single funding will be securely stored in Smart Contract and even funding solicitor cannot access to this funding without permission of investor&apos;s DAO.
@@ -52,7 +74,7 @@ const FeatureComponent = () => {
 
 
 
-                </ul>
+                </ul> */}
 
             </FeatureText>
         </FeaturePaper>

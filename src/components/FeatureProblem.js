@@ -34,7 +34,23 @@ const FeatureComponent = () => {
                 The Crowdfunding Industry faces trust issues.
             </FeatureTitle>
             <FeatureText>
-                <ul>
+
+                <div>
+
+                    <HighlightedText>
+                        Trust Issues :
+                    </HighlightedText>
+                    Misusing of Funds, Unauthorised Companies, Clone Firms.
+                </div>
+
+                <div>
+
+                    <HighlightedText>
+                        Fraud Issues :
+                    </HighlightedText>
+                    Campaign Fraud, Fake Platforms.
+                </div>
+                {/* <ul>
                     <li>
 
                         Misusing of Funds : This scam involves the fundraiser taking the invested money for personal use rather than spending it on the project. Often in this case the project is never completed and investors’ requests for a return are ignored.
@@ -53,7 +69,7 @@ const FeatureComponent = () => {
                     </li>
 
 
-                </ul>
+                </ul> */}
 
             </FeatureText>
         </FeaturePaper>
