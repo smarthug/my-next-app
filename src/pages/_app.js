@@ -22,6 +22,8 @@ import Appbar from '../components/Appbar';
 import MainContainer from '../components/MainContainer';
 import { FundStoreInitializer } from '../utils/store';
 
+import Footer from '@/components/Footer';
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     cronosTestnet,
@@ -59,6 +61,7 @@ function MyApp({ Component, pageProps }) {
         <MainContainer>
           <Component {...pageProps} />
 
+        <Footer />
         </MainContainer>
       </RainbowKitProvider>
     </WagmiConfig>
