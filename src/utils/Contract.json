@@ -1,6 +1,6 @@
 {
-    "fundManagerAddress":"0xE6D9D514eF6Abc2D539457Ee2778b93433c08877",
-    "fundAddressImpl": "0xe424f407E0114f86E5E2767b395Fc8d2052793F0",
+    "fundManagerAddress":"0x97C1BF713d177BED33387d20F2D053489B48F828",
+    "fundAddressImpl": "0xEa63798D79CE01AfAecFb8d7aBe3a6FbAB70c18E",
     "fundManagerABI":[
         {
             "inputs": [],
