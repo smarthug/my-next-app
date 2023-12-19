@@ -20,7 +20,7 @@ const projects = [
   // ... your projects data
   0, 0, 0, 0
 ];
-var tempProjectList = new Array();
+// var tempProjectList = new Array();
 
 function Home() {
   const [projectDetails, setProjectDetails] = useState([]);
@@ -32,10 +32,11 @@ function Home() {
   });
 
   const getProjectData = async () => {
+    const tmpArr = []
     var temp = await db.collection('Projects').get();
     console.log(temp.docs[0].data());
     for (let i = 0; i < temp.docs.length; i++) {
-      tempProjectList.push({
+      tmpArr.push({
         title: temp.docs[i].data().Title,
         description: temp.docs[i].data().Description,
         creator: temp.docs[i].id,
@@ -46,7 +47,9 @@ function Home() {
         location: 'Rolleston, NZ'
       })
     }
-    setProjectDetails(tempProjectList);
+
+    console.log(tmpArr)
+    setProjectDetails(tmpArr);
   }
 
 
@@ -82,7 +85,7 @@ function Home() {
 
           <FeatureImage src="/solution.png" />
           </Grid>
-          {tempProjectList.map((project, index) => (
+          {projectDetails.map((project, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
               <Landing projectDetail={project} />
             </Grid>
