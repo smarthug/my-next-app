@@ -46,7 +46,6 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
     const [selectedOptions, setSelectedOptions] = React.useState('');
     const fundABI = Contract.fundABI;
     web3 = new Web3(window.ethereum);
-    const account = getAccount().address;
 
 
     const handleSubcategoryChange = (event) => {
@@ -57,16 +56,18 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
 
 
     async function handleMint() {
+        const account = getAccount().address;
         console.log(selectedOptions)
         console.log("mint");
         let contract = await new web3.eth.Contract(fundABI,projectId) ;
         console.log(options[selectedOptions].price);
-        
+        console.log(account);
+        console.log(web3.utils.toWei(options[selectedOptions].price,"ether"));        
         let ret = await web3.eth.sendTransaction({
           from: account,
           to: projectId,
           data: contract.methods.mintMultiple(account,"1", selectedOptions).encodeABI(),
-          value: options[selectedOptions].price,//price는 web3.utils로 변환해서 넣거나, 컨트랙트에서 수정
+          value: web3.utils.toWei(options[selectedOptions].price,"ether"),//price는 web3.utils로 변환해서 넣거나, 컨트랙트에서 수정
           gas: '1000000'            
           })
           .then(function(receipt){

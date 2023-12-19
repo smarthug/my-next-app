@@ -149,6 +149,11 @@ export default function DeployButton() {
         console.log("optionNum", optionNum)
         console.log("options", options)
         console.log("prices", prices)
+
+        let ethPrices = new Array();
+        for(let i = 0;i<prices.length;i++){
+            ethPrices.push(web3.utils.toWei(prices[i],"ether"));
+        }
         
         if(sumOfFund !== 100) {
             alert("펀딩 비율의 합이 100이 아닙니다.")
@@ -218,7 +223,7 @@ export default function DeployButton() {
         ret = await web3.eth.sendTransaction({
           from: account,
           to: fundContract,
-          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,dayjs(saleStartTime).unix(),dayjs(saleEndTime).unix().toString(),prices,optionNum,goalAmount,fundRatio,account).encodeABI(),
+          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,dayjs(saleStartTime).unix(),dayjs(saleEndTime).unix().toString(),ethPrices,optionNum,goalAmount,fundRatio,account).encodeABI(),
           gas: '2000000'            
           })
           .then(async function(receipt){

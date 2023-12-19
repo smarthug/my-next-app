@@ -104,8 +104,9 @@ export default function ColumnsGrid(props) {
 
     const getDBData = async () => {
         var DB = await db.collection('Projects');
+        console.log(fundContract);
         let tempVoteList = new Array();
-        var tempVoteData = await DB.doc(fundContract).get().then(async function (data) {
+        var tempVoteData = await DB.doc(fundContract.toString().toLowerCase()).get().then(async function (data) {
             console.log(data.data());
             setFetchedData(data.data());
             // if (data.data().Votes != undefined) {

@@ -1,6 +1,6 @@
 import { styled, Typography, Box } from '@mui/material';
 import NextLink from 'next/link';
-import { FacebookIcon, LinkedinIcon, TwitterIcon } from 'react-share';
+// import { FacebookIcon, LinkedinIcon, TwitterIcon } from 'react-share';
 import Container from '@/components/Container';
 import { media } from '@/utils/media';
 
