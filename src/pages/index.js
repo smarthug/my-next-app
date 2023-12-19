@@ -67,9 +67,9 @@ function Home() {
 
       <Container>
         <Grid container spacing={4}>
-          <Hero />
+          {/* <Hero /> */}
 
-          <Grid item xs={12} sm={6} md={6}>
+          {/* <Grid item xs={12} sm={6} md={6}>
 
             <FeatureImage src="/problem.png" />
           </Grid>
@@ -84,7 +84,7 @@ function Home() {
           <Grid item xs={12} sm={6} md={6}>
 
           <FeatureImage src="/solution.png" />
-          </Grid>
+          </Grid> */}
           {projectDetails.map((project, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
               <Landing projectDetail={project} />

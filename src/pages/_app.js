@@ -22,7 +22,6 @@ import Appbar from '../components/Appbar';
 import MainContainer from '../components/MainContainer';
 import { FundStoreInitializer } from '../utils/store';
 
-import Footer from '@/components/Footer';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -60,8 +59,6 @@ function MyApp({ Component, pageProps }) {
         <Appbar />
         <MainContainer>
           <Component {...pageProps} />
-
-        <Footer />
         </MainContainer>
       </RainbowKitProvider>
     </WagmiConfig>
