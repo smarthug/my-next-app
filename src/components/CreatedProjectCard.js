@@ -44,39 +44,44 @@ const TextSection = styled.div`
 export default function MyComponent(props) {
   const [title, setTitle] = useState('');
   const [imageURL, setImageURL] = useState('');
-  
+
 
   useEffect(() => {
 
-      const fetchData = async () => {
-          var DB = await db.collection('Projects').doc(props.projectContract.toLowerCase()).get().then(async function(data) {
-              console.log(data.data())
-              if(data.data() != undefined){
-                setTitle(data.data().Title);
-                setImageURL(data.data().ImageURL);
+    const fetchData = async () => {
+      var DB = await db.collection('Projects').doc(props.projectContract.toLowerCase()).get().then(async function (data) {
+        console.log(data.data())
+        if (data.data() != undefined) {
+          setTitle(data.data().Title);
+          setImageURL(data.data().ImageURL);
 
-              }
-          });
-      }
-      fetchData();
+        }
+      });
+    }
+    fetchData();
 
-    }, [])
+  }, [])
 
-    return (
-      <Wrapper>
-        <ImagePlaceholder>
-          {/* <span>Image</span> Placeholder for the image */}
-          <img src={imageURL} />
-        </ImagePlaceholder>
-        <TextSection>
-          <div>{title}</div>
-          <div>{imageURL}</div>
-        </TextSection>
-        <div>
-          <Button component={Link} href={`/creators/projects/${props.projectContract}`} variant="contained">투표 등록</Button>
-          {/* <Button>관리</Button> */}
-          {/* <Button>삭제</Button> */}
-        </div>
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <ImagePlaceholder>
+        {/* <span>Image</span> Placeholder for the image */}
+        <img
+          style={{
+            width: '172px',
+            height: '129px'
+          }}
+          src={imageURL} />
+      </ImagePlaceholder>
+      <TextSection>
+        <div>{title}</div>
+        <div>{imageURL}</div>
+      </TextSection>
+      <div>
+        <Button component={Link} href={`/creators/projects/${props.projectContract}`} variant="contained">투표 등록</Button>
+        {/* <Button>관리</Button> */}
+        {/* <Button>삭제</Button> */}
+      </div>
+    </Wrapper>
+  )
+}

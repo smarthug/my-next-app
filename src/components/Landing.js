@@ -40,7 +40,7 @@ function ProjectComponent(props) {
 
 
     return (
-        <Link href="/project/0x5e60d41871492883cc38ce000e9876f79b188850" passHref>
+        <Link href={`/project/${props.projectDetail.creator}`} passHref>
 
                     <ProjectCard>
                         <CardMedia
