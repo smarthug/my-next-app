@@ -219,11 +219,12 @@ export default function DeployButton() {
         // string memory _fundContent
         const goalBlock = parseInt(await web3.eth.getBlockNumber(),10) + 100;
         console.log(parseInt(goalBlock));
+        const tempGoalAmount = web3.utils.toWei(goalAmount,"ether")
         
         ret = await web3.eth.sendTransaction({
           from: account,
           to: fundContract,
-          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,dayjs(saleStartTime).unix(),dayjs(saleEndTime).unix().toString(),ethPrices,optionNum,goalAmount,fundRatio,account).encodeABI(),
+          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,dayjs(saleStartTime).unix(),dayjs(saleEndTime).unix().toString(),ethPrices,optionNum,tempGoalAmount,fundRatio,account).encodeABI(),
           gas: '2000000'            
           })
           .then(async function(receipt){

@@ -38,7 +38,7 @@ export default function CustomizedInputs(props) {
     console.log(tmpDetail)
     console.log(props.index);
 
-
+    tmpMilestoneDesc[0] = "펀딩 성공";
     tmpMilestoneDesc[props.index + 1] = tmpDetail
     useFundStore.setState({ milestoneDesc: [...tmpMilestoneDesc] })
   };
