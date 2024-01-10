@@ -5,6 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
 import useFundStore from '../utils/store';
 
+import OptionImageUploadButton from './OptionImageUploadButton';
+
 // Styling the card with a border and padding
 const StyledCard = styled(Card)(({ theme }) => ({
     border: `1px solid ${theme.palette.error.main}`,
@@ -19,12 +21,12 @@ const DeleteButton = styled(IconButton)(({ theme }) => ({
     top: theme.spacing(1),
 }));
 
-const initialOptions = [
-    { price: 0.001, optionTitle: "옵션1" },
-    { price: 0.002, optionTitle: "옵션2" },
-    { price: 0.01, optionTitle: "옵션3" },
-    { price: 0.02, optionTitle: "옵션4" },
-];
+// const initialOptions = [
+//     { price: 0.001, optionTitle: "옵션1" },
+//     { price: 0.002, optionTitle: "옵션2" },
+//     { price: 0.01, optionTitle: "옵션3" },
+//     { price: 0.02, optionTitle: "옵션4" },
+// ];
 
 function OptionsContainer() {
     // const [options, setOptions] = useState(initialOptions);
@@ -35,6 +37,9 @@ function OptionsContainer() {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState(0);
 
+    const [description, setDescription] = useState('');
+    const [imageURL, setImageURL] = useState('');
+
     const handlePriceChange = (event) => {
         setPrice(event.target.value);
     };
@@ -42,6 +47,10 @@ function OptionsContainer() {
     const handleTitleChange = (event) => {
 
         setTitle(event.target.value);
+    };
+
+    const handleDescriptionChange = (event) => {
+        setDescription(event.target.value);
     };
 
     const handleDelete = (index) => {
@@ -55,6 +64,8 @@ function OptionsContainer() {
             price: price, // Default price
             optionTitle: `${title}`, // A new option title
             // Add any other default properties for the new option
+            description: description,
+            imageURL: imageURL
         };
         setOptions([...options, newOption]);
     };
@@ -72,12 +83,26 @@ function OptionsContainer() {
                     <Box>
                         {options.map((option, index) => (
                             <StyledCard key={index}>
+                                
+                                <img
+                                    src={option.imageURL}
+                                    alt="option"
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '200px',
+                                        marginTop: '64px',
+                                    }}
+                                />
                                 <CardContent>
                                     <Typography variant="h5" component="h2" gutterBottom>
                                         {option.price}eth+
                                     </Typography>
-                                    <Typography variant="body2" color="textSecondary">
+                                    <Typography variant="body1" color="textSecondary">
                                         {option.optionTitle}
+                                    </Typography>
+
+                                    <Typography variant="subtitle2" color="textSecondary">
+                                        {option.description}
                                     </Typography>
 
                                 </CardContent>
@@ -115,7 +140,7 @@ function OptionsContainer() {
                             marginTop: "48px"
                         }}>
                             <TextField
-                                label="선물 설명"
+                                label="선물 이름"
                                 variant="outlined"
                                 color="secondary"
                                 // fullWidth
@@ -154,6 +179,47 @@ function OptionsContainer() {
                                 Add Option
                             </Button>
                         </Box>
+
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginTop: "48px"
+                        }}>
+                            <TextField
+                                label="선물 설명"
+                                variant="outlined"
+                                color="secondary"
+                                fullWidth
+                                multiline
+                                rows={4}
+                                margin="normal"
+                                value={description}
+                                onChange={handleDescriptionChange}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">{`${description.length}/300`}</InputAdornment>,
+                                }}
+                            />
+
+
+
+
+                        </Box>
+
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginTop: "48px"
+                        }}>
+                            <OptionImageUploadButton imageURL={imageURL} setImageURL={setImageURL} />
+
+
+
+
+                        </Box>
+
+
 
 
                     </Box>
