@@ -173,6 +173,23 @@ export default function DeployButton() {
         //     })
         // }
         // console.log(tempOption);
+        //options 받아와서 각각 metadata 형식으로 만들기
+        //각 metadata를 nft.storage에 올리고 url 받기
+        // metadata url을 setInitialValue에 넣기
+        let tempOptions = {};//options의 각각의 metadata 형식 변수
+        let optionsURL = new Array(); //metadata URL
+        for(let i = 0;i<options.length;i++){
+            tempOptions = {
+                "name": title,
+                "description": options[i].description,
+                "image": options[i].imageURL,
+                "attribute": [
+                    { "trait_type": "PRICE", "value": options[i].price+"ETH" }
+                  ]
+            };
+            const optionURI = await ipfsUploadMetadata(tempOptions);
+            optionsURL.push(`https://${optionURI}.ipfs.nftstorage.link`);
+        }
 
         
         if (title.length > 0 && fundContent.length > 0) {
@@ -226,7 +243,7 @@ export default function DeployButton() {
         ret = await web3.eth.sendTransaction({
           from: account,
           to: fundContract,
-          data: contract.methods.setInitialValue(title, "FUND",fundURL,milestoneNum,dayjs(saleStartTime).unix(),dayjs(saleEndTime).unix().toString(),ethPrices,optionNum,tempGoalAmount,fundRatio,account).encodeABI(),
+          data: contract.methods.setInitialValue(title, "FUND",optionsURL,milestoneNum,dayjs(saleStartTime).unix(),dayjs(saleEndTime).unix().toString(),ethPrices,optionNum,tempGoalAmount,fundRatio,account).encodeABI(),
           gas: '2000000'            
           })
           .then(async function(receipt){

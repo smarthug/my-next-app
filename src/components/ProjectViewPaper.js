@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Web3 from "web3";
@@ -44,8 +44,35 @@ const IconContainer = styled('div')({
 export default function ProjectViewPaper({ projectId, options, fundGoal, fundStart, fundEnd }) {
 
     const [selectedOptions, setSelectedOptions] = React.useState('');
+    const [fundAmount, setFundAmount] = React.useState(0);
+    const [leftDay, setLeftDay] = React.useState(0);
+    const [fundedNum, setFundedNum] = React.useState(0);
     const fundABI = Contract.fundABI;
+    const account = getAccount().address;
     web3 = new Web3(window.ethereum);
+
+    
+    useEffect(() => {
+        getProjectData();
+    },[account]);
+
+    async function getProjectData() {
+        if(account.toString().length > 0){
+            let contract = await new web3.eth.Contract(fundABI,projectId) ;
+            const projectData = await contract.methods.getFundInfo().call();
+            console.log(projectData);
+            setFundAmount(web3.utils.fromWei(parseInt(projectData[6]),"ether"));
+            console.log(web3.utils.fromWei(projectData[6],"ether"));
+            console.log(projectData[7]);
+            setFundedNum(parseInt(projectData[7]));
+            let date = new Date().getTime();
+            let difference = parseInt(projectData[2])-(date/1000);
+            console.log(date)
+            console.log(parseInt(projectData[2]))
+            setLeftDay(Math.floor(difference / (60 * 60)));
+
+        }
+    }
 
 
     const handleSubcategoryChange = (event) => {
@@ -56,7 +83,6 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
 
 
     async function handleMint() {
-        const account = getAccount().address;
         console.log(selectedOptions)
         console.log("mint");
         let contract = await new web3.eth.Contract(fundABI,projectId) ;
@@ -72,6 +98,7 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
           })
           .then(function(receipt){
           console.log("Mint success")
+          getProjectData()
           });
     }
 
@@ -87,7 +114,7 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
                 }}
             >
 
-                <CustomTypography variant="h4">0 원
+                <CustomTypography variant="h4">{fundAmount} ETH
 
                 </CustomTypography>
 
@@ -95,16 +122,16 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
 
 
                 <CustomTypography variant="body2" color="textSecondary">
-                    0%
+                    {fundAmount/fundGoal*100}%
                 </CustomTypography>
 
             </Box>
 
             <CustomTypography variant="h6">남은시간</CustomTypography>
             {/* <CustomTypography variant="h4">24 일</CustomTypography> */}
-            <CustomTypography variant="h4">{dayjs().diff(dayjs.unix(fundEnd), 'day')} 일</CustomTypography>
+            <CustomTypography variant="h4">{leftDay} 시간</CustomTypography>
             <CustomTypography variant="h6">후원자</CustomTypography>
-            <CustomTypography variant="h4">0 명</CustomTypography>
+            <CustomTypography variant="h4">{fundedNum} 명</CustomTypography>
             <Typography variant="body2" color="textSecondary">
                 목표금액 {fundGoal}eth
             </Typography>
