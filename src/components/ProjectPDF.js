@@ -230,7 +230,7 @@ export default function ColumnsGrid(props) {
                             {fetchedData.FundOption.map((item, index) => {
 
                                 return (
-                                    <OptionsCard key={index} optionTitle={item.optionTitle} price={item.price} />
+                                    <OptionsCard key={index} optionTitle={item.optionTitle} price={item.price} soldNum={item.soldNum} />
                                 )
                             }
                             )}
@@ -327,7 +327,7 @@ function TeamDescription({ teamDescription }) {
 }
 
 
-function OptionsCard({ optionTitle, price }) {
+function OptionsCard({ optionTitle, price, soldNum }) {
     return (
         <Box m={1}>
 
@@ -335,7 +335,7 @@ function OptionsCard({ optionTitle, price }) {
                 <CardContent>
                     <Typography variant="body1" gutterBottom>
                         <Chip
-                            label="0명이 선택"
+                            label={soldNum + "명이 선택"}
                             variant="outlined"
                             color="primary"
                             size="small"

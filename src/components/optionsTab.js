@@ -65,7 +65,8 @@ function OptionsContainer() {
             optionTitle: `${title}`, // A new option title
             // Add any other default properties for the new option
             description: description,
-            imageURL: imageURL
+            imageURL: imageURL,
+            soldNum: 0
         };
         setOptions([...options, newOption]);
     };

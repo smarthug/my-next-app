@@ -11,6 +11,7 @@ import { getAccount } from '@wagmi/core'
 import Contract from "../utils/Contract.json";
 import useFundStore, { FundStoreInitializer } from '../utils/store';
 
+import db from '../utils/firebase.js';
 import dayjs from 'dayjs';
 
 const CustomPaper = styled(Paper)({
@@ -96,9 +97,22 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
           value: web3.utils.toWei(options[selectedOptions].price,"ether"),//price는 web3.utils로 변환해서 넣거나, 컨트랙트에서 수정
           gas: '1000000'            
           })
-          .then(function(receipt){
-          console.log("Mint success")
-          getProjectData()
+          .then(async function(receipt){
+            console.log("Mint success");
+            getProjectData();
+            let tempOptions = [...options];
+            if(tempOptions[selectedOptions].soldNum != undefined){
+                tempOptions[selectedOptions].soldNum += 1;
+
+            }else{
+                tempOptions[selectedOptions] = {
+                    ...tempOptions[selectedOptions],
+                    soldNum: 1
+                }
+            }
+            var DBProject = await db.collection('Projects').doc(projectId).set({
+                FundOption: tempOptions
+            }, { merge: true })
           });
     }
 
