@@ -84,6 +84,10 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
 
 
     async function handleMint() {
+        if(selectedOptions.length < 1){
+            alert("옵션을 선택해주세요.");
+            return 0;
+        }
         console.log(selectedOptions)
         console.log("mint");
         let contract = await new web3.eth.Contract(fundABI,projectId) ;
@@ -113,7 +117,10 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
             var DBProject = await db.collection('Projects').doc(projectId).set({
                 FundOption: tempOptions
             }, { merge: true })
-          });
+          })
+          .catch((err) => {
+            alert(err.data.message);
+          })
     }
 
 

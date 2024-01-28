@@ -100,7 +100,7 @@ export default function DeployButton(props) {
     const handlevoteNumChange = async (e) => {
         console.log(e.target.value);
         setVoteContent(milestone[e.target.value-1].voteContent);
-        setVoteNum(e.target.value+1);
+        setVoteNum(e.target.value);
     }
 
 
@@ -146,6 +146,14 @@ export default function DeployButton(props) {
         console.log(dayjs(voteEndDate).unix());
         console.log(voteURL);
         console.log(voteNum);
+        let DB = await db.collection('Projects');
+        await DB.doc(fundContract).get().then(async function(data) {    
+          console.log(data.data());
+          if(data.data().Votes != undefined && data.data().Votes.length > (voteNum+1)){
+            alert("You already hold this vote.");
+            return 0;
+          }
+        });
         
         let ret = await web3.eth.sendTransaction({
         from: account,
@@ -155,7 +163,6 @@ export default function DeployButton(props) {
         })
         .then(async function(receipt){
           console.log(receipt);
-          var DB = await db.collection('Projects');
           let tempVoteList = new Array();
           var tempVoteData = await DB.doc(fundContract).get().then(async function(data) {    
             console.log(data.data());
@@ -170,7 +177,10 @@ export default function DeployButton(props) {
             Votes:tempVoteList
           }, { merge: true });
           console.log("Set Vote Data success");
-        });
+        })
+        .catch((err) => {
+            alert(err.data.message);
+          })
     }
     return (
 

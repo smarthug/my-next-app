@@ -16,7 +16,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import Contract from "../utils/Contract.json";
-import { getAccount } from '@wagmi/core'
+import { useAccount } from 'wagmi'
 import { IM_Fell_DW_Pica } from 'next/font/google/index.js';
 
 
@@ -33,7 +33,7 @@ export default function HorizontalLinearStepper(props) {
     const [voteEndDate, setVoteEndDate] = useState('');
     const [steps, setSteps] = useState(['펀딩 성공', '디자인 완성', '시제품 제작', '제품 수정', '공장 수주']);
     const fundContract = props.projectId;
-    const account = getAccount().address;
+    const account = useAccount().address;
     web3 = new Web3(window.ethereum);
 
     //   const isStepOptional = (step) => {
@@ -54,10 +54,10 @@ export default function HorizontalLinearStepper(props) {
                 setActiveStep(tempVoteList.length);
                 setVoteTitle(tempVoteList[tempVoteList.length - 1].VoteTitle);
                 setVoteContent(tempVoteList[tempVoteList.length - 1].VoteContent);
+                console.log((tempVoteList[tempVoteList.length - 1].VoteEndDate));
                 setVoteEndDate(dayjs(tempVoteList[tempVoteList.length - 1].VoteEndDate));
 
                 let tempMilestone = new Array();
-                tempMilestone.push('펀딩 성공');
                 for (let i = 0; i < data.data().MilestoneDesc.length; i++) {
                     tempMilestone.push(data.data().MilestoneDesc[i]);
                 }
@@ -86,11 +86,30 @@ export default function HorizontalLinearStepper(props) {
     const voteDisagree = async () => {
         const fundABI = Contract.fundABI;
         const contract = await new web3.eth.Contract(fundABI, fundContract);
+        console.log(activeStep)
 
         let ret = await web3.eth.sendTransaction({
             from: account,
             to: fundContract,
             data: contract.methods.voteDisagree(activeStep).encodeABI(),
+            gas: '1000000'
+        })
+            .then(function (receipt) {
+                console.log("Vote success")
+            });
+
+    }
+
+    
+    const handleRefund = async () => {
+        const fundABI = Contract.fundABI;
+        const contract = await new web3.eth.Contract(fundABI, fundContract);
+        console.log(activeStep)
+
+        let ret = await web3.eth.sendTransaction({
+            from: account,
+            to: fundContract,
+            data: contract.methods.getRefund(activeStep).encodeABI(),
             gas: '1000000'
         })
             .then(function (receipt) {
@@ -252,7 +271,7 @@ export default function HorizontalLinearStepper(props) {
                                 Disagree
                             </Button>
 
-                            <Button variant='contained' fullWidth onClick={handleDisagree}>
+                            <Button variant='contained' fullWidth onClick={handleRefund}>
                                 {/* {activeStep === steps.length - 1 ? 'Finish' : 'Disagree'} */}
                                 Refund
                             </Button>
