@@ -25,13 +25,13 @@ import { FundStoreInitializer } from '../utils/store';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
+    polygonMumbai,
     cronosTestnet,
     mainnet,
     polygon,
     optimism,
     arbitrum,
     base,
-    polygonMumbai,
     zora,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [goerli] : []),
   ],
