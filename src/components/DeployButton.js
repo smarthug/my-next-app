@@ -183,6 +183,7 @@ export default function DeployButton() {
                 "name": title,
                 "description": options[i].description,
                 "image": options[i].imageURL,
+                "soldNum": 0,
                 "attribute": [
                     { "trait_type": "PRICE", "value": options[i].price+"ETH" }
                   ]

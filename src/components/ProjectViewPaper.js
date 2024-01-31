@@ -54,11 +54,12 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
 
     
     useEffect(() => {
-        getProjectData();
-    },[account]);
+        if(leftDay == 0){
+            getProjectData();
+        }
+    },[]);
 
     async function getProjectData() {
-        if(account.toString().length > 0){
             let contract = await new web3.eth.Contract(fundABI,projectId) ;
             const projectData = await contract.methods.getFundInfo().call();
             console.log(projectData);
@@ -71,8 +72,6 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
             console.log(date)
             console.log(parseInt(projectData[2]))
             setLeftDay(Math.floor(difference / (60 * 60)));
-
-        }
     }
 
 
@@ -103,7 +102,6 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
           })
           .then(async function(receipt){
             console.log("Mint success");
-            getProjectData();
             let tempOptions = [...options];
             if(tempOptions[selectedOptions].soldNum != undefined){
                 tempOptions[selectedOptions].soldNum += 1;
@@ -117,6 +115,7 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
             var DBProject = await db.collection('Projects').doc(projectId).set({
                 FundOption: tempOptions
             }, { merge: true })
+            await getProjectData();
           })
           .catch((err) => {
             alert(err.data.message);
