@@ -12,16 +12,16 @@ import DeployTabs from '../../../components/DeployTabs';
 // import DeployButton from '../../../components/DeployButton';
 // import dynamic from 'next/dynamic'
 
-const DeployButton = dynamic(() => import('../../../components/DeployButton'), {
-  ssr: false
-})
 
 // import BasicInfoTab from '../../../components/BasicInfoTab';
 // import RoadMap from './roadmap'
 // import MilestoneTab from '../../../components/MilestoneTab'
 
 import dynamic from "next/dynamic";
-
+const DeployButton = dynamic(() => import('../../../components/DeployButton'), {
+    ssr: false
+  })
+  
 const OptionsTab = dynamic(() => import("../../../components/optionsTab"), { ssr: false });
 
 

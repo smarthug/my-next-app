@@ -16,8 +16,10 @@ const NavTabs = () => {
         return 1;
       case '/creators/deploy/milestone':
         return 2;
-      case '/creators/deploy/options':
+      case '/creators/deploy/story':
         return 3;
+      case '/creators/deploy/options':
+        return 4;
       default:
         return 0;
     }
@@ -61,6 +63,9 @@ const NavTabs = () => {
       </Link>
       <Link href="/creators/deploy/milestone" passHref>
         <Tab label="milestone" />
+      </Link>
+      <Link href="/creators/deploy/story" passHref>
+        <Tab label="story" />
       </Link>
       <Link href="/creators/deploy/options" passHref>
         <Tab label="options" />
