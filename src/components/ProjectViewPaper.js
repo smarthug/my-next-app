@@ -116,6 +116,8 @@ export default function ProjectViewPaper({ projectId, options, fundGoal, fundSta
                 FundOption: tempOptions
             }, { merge: true })
             await getProjectData();
+
+            window.location.reload();
           })
           .catch((err) => {
             alert(err.data.message);

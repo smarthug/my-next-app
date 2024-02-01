@@ -265,6 +265,9 @@ export default function DeployButton() {
                 projectContract : tempCreatorList
             }, { merge: true })
             console.log("Set Init Value success");
+
+            // setIsLoading(false)
+            router.push(`/project/${fundContract}`);
           });
     }
     return (

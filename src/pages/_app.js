@@ -22,6 +22,11 @@ import Appbar from '../components/Appbar';
 import MainContainer from '../components/MainContainer';
 import { FundStoreInitializer } from '../utils/store';
 
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+import darkTheme from '@/utils/theme';
+
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -56,10 +61,13 @@ function MyApp({ Component, pageProps }) {
     <WagmiConfig config={wagmiConfig}>
       <FundStoreInitializer />
       <RainbowKitProvider chains={chains}>
-        <Appbar />
-        <MainContainer>
-          <Component {...pageProps} />
-        </MainContainer>
+        {/* <ThemeProvider theme={darkTheme}> */}
+        {/* <CssBaseline /> */}
+          <Appbar />
+          <MainContainer>
+            <Component {...pageProps} />
+          </MainContainer>
+        {/* </ThemeProvider> */}
       </RainbowKitProvider>
     </WagmiConfig>
   );

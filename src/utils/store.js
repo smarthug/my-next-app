@@ -1,6 +1,11 @@
-import create from 'zustand'
+import {create} from 'zustand'
 import { useEffect } from 'react'
 import { Subtitles } from '@mui/icons-material';
+
+export const useCrowdStepStore = create((set) => ({
+    isLoading: false,
+    setIsLoading: (isLoading) => set({ isLoading }),
+}));
 
 // Define the store without initial localStorage values
 const useFundStore = create((set) => ({

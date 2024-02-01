@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import useFundStore from '@/utils/store';
 import { ipfsUploadImage } from '@/utils/ipfsUpload';
+import { useCrowdStepStore } from '../utils/store';
 
 // Styled component for the image
 const UploadedImage = styled('img')({
@@ -13,6 +14,7 @@ const UploadedImage = styled('img')({
 
 function ImageUploadButton({imageURL, setImageURL}) {
     // const [image, setImage] = useState(null);
+    const setIsLoading = useCrowdStepStore(state => state.setIsLoading);
 
     // const imageURL = useFundStore(state => state.imageURL);
     // console.log("imageURL", imageURL)
@@ -22,6 +24,7 @@ function ImageUploadButton({imageURL, setImageURL}) {
     const handleImageChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
+            setIsLoading(true)
             const reader = new FileReader();
             // reader.onload = (e) => setImage(e.target.result);
             reader.readAsDataURL(file);
@@ -40,6 +43,7 @@ function ImageUploadButton({imageURL, setImageURL}) {
             // const image = `https://${imageCID}`; 
             console.log(image);
             setImageURL(image);
+            setIsLoading(false)
         }
     };
 

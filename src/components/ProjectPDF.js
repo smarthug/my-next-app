@@ -27,7 +27,7 @@ import ProjectViewStepper from '@/components/ProjectViewStepper';
 
 import ProjectViewPaper from '@/components/ProjectViewPaper';
 
-import Sample from './Sample';
+// import Sample from './Sample';
 
 // import { styled } from '@mui/material/styles';
 // import Box from '@mui/material/Box';
@@ -213,7 +213,7 @@ export default function ColumnsGrid(props) {
                         {/* <Paper sx={{ height: 3000, width: '100%' }} /> */}
                         <ProjectDescription description={fetchedData.Description} />
 
-                        <Sample />
+                        {/* <Sample /> */}
 
 
                     </Grid>
